@@ -1,9 +1,9 @@
 import {View, Text} from 'react-native';
 import React from 'react';
-import AllNavigate from './src/NavigationScreen/AllNavigate';
+import Routes from './src/navigation/Routes';
 
 const App = () => {
-  return <AllNavigate />;
+  return <Routes />;
 };
 
 export default App;
