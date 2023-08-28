@@ -10,6 +10,7 @@ export const COLOR = {
   LIGHT_BLUE: '#D1EEFF',
   TITLE_COLOR: '#00C7FE',
   THEAMEBACK: '#FFFFFF',
+  THEAMEWHITE:'#FFFCFA',
   WHITE: '#FFFFFF',
   BLACK: '#333333',
   Green: '#157B11',
