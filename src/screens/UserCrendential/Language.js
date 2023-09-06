@@ -35,7 +35,7 @@ const Language = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor={COLOR.ThemeColor} barStyle="dark-content" />
+      <StatusBar backgroundColor={COLOR.WHITE} barStyle="dark-content" />
       {/* --------Header ------- */}
       <TouchableOpacity
         onPress={() => navigation.goBack('')}

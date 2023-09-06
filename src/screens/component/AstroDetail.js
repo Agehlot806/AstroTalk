@@ -1,3 +1,5 @@
+// Test
+
 import {
   StyleSheet,
   Text,
@@ -126,7 +128,9 @@ const AstroDetail = ({navigation}) => {
           flexDirection: 'row',
           alignItems: 'center',
         }}>
-        <TouchableOpacity onPress={() => navigation.goBack('')}>
+        <TouchableOpacity
+          activeOpacity={0.6}
+          onPress={() => navigation.goBack('')}>
           <Back height={hp('6%')} width={wp('8%')} />
         </TouchableOpacity>
         <View style={{width: '65%'}}>
@@ -136,6 +140,7 @@ const AstroDetail = ({navigation}) => {
         </View>
 
         <TouchableOpacity
+          activeOpacity={0.6}
           style={styles.Imageheadiew}
           onPress={() => navigation.navigate('KundliSearch')}>
           <Whatsapp height={hp('3%')} width={wp('4%')} />
@@ -143,6 +148,7 @@ const AstroDetail = ({navigation}) => {
         </TouchableOpacity>
       </View>
       {/* ---------- header end --- */}
+
       <ScrollView style={{flexGrow: 1}} showsVerticalScrollIndicator={false}>
         <View style={[styles.cardView, {flexDirection: 'row'}]}>
           <Image
@@ -677,11 +683,19 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: hp('3%'),
     padding: hp('1%'),
-    elevation: 0.4,
     width: wp('89%'),
-    marginRight: hp('2%'),
+    marginHorizontal: hp('1%'),
     marginTop: hp('2%'),
     marginBottom: wp('2%'),
+    backgroundColor: COLOR.WHITE,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.14,
+    elevation: 4,
   },
 
   imageView: {
@@ -746,10 +760,18 @@ const styles = StyleSheet.create({
     borderRadius: hp('3%'),
     paddingTop: hp('0.8%'),
     paddingHorizontal: hp('1.5%'),
-    elevation: 0.4,
     width: wp('89%'),
-    marginRight: hp('2%'),
+    marginHorizontal: hp('2%'),
     marginTop: hp('2%'),
     marginBottom: wp('2%'),
+    backgroundColor: COLOR.WHITE,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.14,
+    elevation: 4,
   },
 });

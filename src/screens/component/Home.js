@@ -21,8 +21,10 @@ import Searchicon from '../../Icons/Svg/Searchicon.svg';
 import Youtude from '../../Icons/Svg/Youtude.svg';
 import CommonButton from '../../Providerscreen/CommonButton';
 import {Screen} from '../../constant/screen';
+import Footer from '../../Providerscreen/Footer';
 
 const Home = ({navigation}) => {
+  const [activePageName, setActivePageName] = useState(0);
   const [name, setName] = useState('');
   const [dateBirth, setDateBirth] = useState('');
   const [timeBirth, setTimeBirth] = useState('');
@@ -104,6 +106,7 @@ const Home = ({navigation}) => {
       <StatusBar backgroundColor={COLOR.WHITE} barStyle="dark-content" />
       {/* --------Header ------- */}
       <TouchableOpacity
+        activeOpacity={0.6}
         onPress={() => navigation.goBack('')}
         style={{
           marginVertical: hp('2%'),
@@ -156,6 +159,7 @@ const Home = ({navigation}) => {
           renderItem={({item, index}) => {
             return (
               <TouchableOpacity
+                activeOpacity={0.8}
                 onPress={() => navigation.navigate('DailyHoroscope')}>
                 <View
                   style={[
@@ -191,8 +195,21 @@ const Home = ({navigation}) => {
         </View>
 
         {/* --------- Zodiac list ------- */}
-        <View style={{width: '65%'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: wp('90%'),
+            marginTop: hp('2%'),
+            alignItems: 'center',
+          }}>
           <Text style={styles.titleHead}>Zodiac</Text>
+          <TouchableOpacity>
+            {/* onPress={() => navigation.navigate('AstrologierList')} */}
+            <Text style={[styles.subheadlineText, {color: COLOR.DARK_BLUE}]}>
+              See all
+            </Text>
+          </TouchableOpacity>
         </View>
         <FlatList
           data={ZodiaArray}
@@ -237,9 +254,8 @@ const Home = ({navigation}) => {
             alignItems: 'center',
           }}>
           <Text style={styles.titleHead}>Astrologer</Text>
-          <TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.6}>
             {/* onPress={() => navigation.navigate('AstrologierList')} */}
-
             <Text style={[styles.subheadlineText, {color: COLOR.DARK_BLUE}]}>
               See all
             </Text>
@@ -382,7 +398,9 @@ const Home = ({navigation}) => {
             alignItems: 'center',
           }}>
           <Text style={styles.titleHead}>Live Astrologer</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('CallandChat')}>
+          <TouchableOpacity
+            activeOpacity={0.6}
+            onPress={() => navigation.navigate('CallandChat')}>
             <Text style={[styles.subheadlineText, {color: COLOR.DARK_BLUE}]}>
               See all
             </Text>
@@ -396,6 +414,7 @@ const Home = ({navigation}) => {
           renderItem={({item, index}) => {
             return (
               <TouchableOpacity
+                activeOpacity={0.6}
                 onPress={() => navigation.navigate('CallandChat')}
                 style={[styles.liveView]}>
                 <Image source={item.image} style={styles.liveAstroImage} />
@@ -416,7 +435,9 @@ const Home = ({navigation}) => {
           }}>
           <Text style={styles.titleHead}>Shop add astromoll</Text>
 
-          <TouchableOpacity onPress={() => navigation.navigate('Pooja')}>
+          <TouchableOpacity
+            activeOpacity={0.6}
+            onPress={() => navigation.navigate('Pooja')}>
             <Text style={[styles.subheadlineText, {color: COLOR.DARK_BLUE}]}>
               See all
             </Text>
@@ -430,7 +451,8 @@ const Home = ({navigation}) => {
           renderItem={({item, index}) => {
             return (
               <TouchableOpacity
-                onPress={() => navigation.navigate('CallandChat')}
+                activeOpacity={0.6}
+                onPress={() => navigation.navigate('Pooja')}
                 style={[styles.liveView]}>
                 <Image source={item.image} style={styles.AstromollImage} />
               </TouchableOpacity>
@@ -440,6 +462,7 @@ const Home = ({navigation}) => {
 
         {/* --------- Video --------- */}
         <TouchableOpacity
+          activeOpacity={0.6}
           onPress={() => navigation.navigate('CallandChat')}
           style={[styles.liveView]}>
           <ImageBackground
@@ -464,10 +487,11 @@ const Home = ({navigation}) => {
             </View>
           </ImageBackground>
         </TouchableOpacity>
-        <View style={{marginBottom: hp('6%')}}>
+        <View style={{marginBottom: hp('16%')}}>
           <Text style={styles.titleHead}>Ranbir kapur talk Astrotalk </Text>
         </View>
       </ScrollView>
+      <Footer activePageName={activePageName} />
     </View>
   );
 };
@@ -486,6 +510,7 @@ const styles = StyleSheet.create({
     color: COLOR.DARK_BLUE,
   },
   TextInputStyle: {
+    width: wp('80%'),
     marginLeft: hp('1%'),
     fontSize: FONT_SIZE.F_15,
     fontFamily: FONT.MEDIUM,
@@ -570,7 +595,7 @@ const styles = StyleSheet.create({
   AstromollImage: {
     height: hp('20%'),
     width: wp('35%'),
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     borderRadius: hp('2.5%'),
   },
   astroImage: {
@@ -582,11 +607,20 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: hp('3%'),
     padding: hp('1%'),
-    elevation: 0.4,
-    width: wp('56%'),
-    marginRight: hp('2%'),
-    marginTop: hp('2%'),
+    paddingHorizontal: hp('1%'),
+    width: wp('60%'),
+    marginHorizontal: hp('1%'),
+    // marginTop: hp('2%'),
     marginVertical: wp('2%'),
+    backgroundColor: COLOR.WHITE,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.14,
+    elevation: 4,
   },
 
   imageView: {

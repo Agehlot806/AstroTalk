@@ -20,9 +20,10 @@ import Menuicon from '../../Icons/Svg/Menuicon.svg';
 import Star from '../../Icons/Svg/Star.svg';
 import Whatsapp from '../../Icons/Svg/Whatsapp.svg';
 import CommonButton from '../../Providerscreen/CommonButton';
-import {Screen} from '../../constant/screen';
+import Footer from '../../Providerscreen/Footer';
 
 const Pooja = ({navigation}) => {
+  const [activePageName, setActivePageName] = useState(3);
   const [city, setCity] = useState('');
   const [selectValue, setSelectValue] = useState('');
   const CategyArray = [
@@ -255,6 +256,7 @@ const Pooja = ({navigation}) => {
           }}
         />
       </ScrollView>
+      <Footer activePageName={activePageName} />
     </View>
   );
 };

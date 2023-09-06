@@ -22,4 +22,15 @@ export default IocalImage = {
   LightOrange: require('../Icons/Images/LightOrange.png'),
   DarkOrange: require('../Icons/Images/DarkOrange.png'),
   SkyBlue: require('../Icons/Images/SkyBlue.png'),
+
+  // ---------- Footer icon ---------
+  ActiveHome: require('../Icons/Images/ActiveHome.png'),
+  DiativateHome: require('../Icons/Images/DiativateHome.png'),
+  Activemessages: require('../Icons/Images/Activemessages.png'),
+  Deactivemessage: require('../Icons/Images/Deactivemessage.png'),
+  Play: require('../Icons/Images/Play.png'),
+  Activecall: require('../Icons/Images/Activecall.png'),
+  Deactivecall: require('../Icons/Images/Deactivecall.png'),
+  Activepot: require('../Icons/Images/Activepot.png'),
+  DeactivePlot: require('../Icons/Images/DeactivePlot.png'),
 };

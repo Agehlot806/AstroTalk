@@ -21,6 +21,7 @@ import KundliNewandDelete from '../screens/component/KundliNewandDelete';
 import KundliMatching from '../screens/component/KundliMatching';
 import LiveChat from '../screens/component/LiveChat';
 import IncomingCall from '../screens/component/IncomingCall';
+import Notification from '../screens/component/Notification';
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
 
 const Stack = createNativeStackNavigator();
@@ -36,6 +37,7 @@ const Routes = () => {
         <Stack.Screen name={Screen.LANGUAGE} component={Language} />
         <Stack.Screen name={Screen.PROFILE} component={Profile} />
         <Stack.Screen name={Screen.HOME} component={Home} />
+        <Stack.Screen name="Notification" component={Notification} />
         <Stack.Screen name="PlaceBirth" component={PlaceBirth} />
         <Stack.Screen name="CallandChat" component={CallandChat} />
         <Stack.Screen name="Pooja" component={Pooja} />
