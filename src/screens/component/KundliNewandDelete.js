@@ -126,7 +126,7 @@ const KundliNewandDelete = ({navigation}) => {
         </View>
       </View>
 
-      {/* --------- List of data ------- */}
+      {/* ---------Open kundli  tab of data ------- */}
       {Radio === 0 && (
         <View>
           <FlatList
@@ -400,7 +400,7 @@ const KundliNewandDelete = ({navigation}) => {
       {Radio === 1 && (
         <CommonButton
           ButtonText={'Match Horoscop'}
-          //   HandleNext={() => navigation.navigate('Home')}
+          HandleNext={() => navigation.navigate('KundliMatching')}
         />
       )}
     </View>
@@ -488,7 +488,7 @@ const styles = StyleSheet.create({
   },
   // -------- CARD vIEW ---------
   cardDesign: {
-    marginTop: hp('2%'),
+    marginVertical: hp('1.5%'),
     flexDirection: 'row',
     width: wp('90%'),
     paddingVertical: wp('2%'),

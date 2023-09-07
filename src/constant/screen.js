@@ -9,4 +9,13 @@ export const Screen = {
   HOME: 'Home',
   LANGUAGE: 'Language',
   PROFILE: 'Profile',
+  BANNERFIRST:'Bannerfirst',
+  BANNERSECOND:'Bannersecond',
+  BANNERTHIRD:'Bannerthird',
+  BANNERFOURTH:'Bannerfourth',
+  ONBOARDINGCONTAINER:'Onboardingcontainer',
+  OTPVERIFICATION:'Otpverification',
+  CREATENEWKUNDALI:'Createnewkundali',
+  SIMILERASTROLOGR:'Similarastrologer',
+  BASICDETAILS:'Basicdetails'
 };

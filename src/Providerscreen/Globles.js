@@ -1,7 +1,7 @@
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export const STORE_KEY = 'a56z0fzrNpl^2';
-export const BASE_URL = 'http://someurl.com';
+export const BASE_URL = 'https://astrotalk.techpanda.art/base/';
 export const COLOR = {
   THEAME: '#e1353b',
   YELLOW: '#FBA424',

@@ -324,7 +324,7 @@ const styles = StyleSheet.create({
     padding: hp('1%'),
     marginHorizontal: hp('0.8%'),
     elevation: 0.4,
-    width: wp('20%'),
+    // width: wp('20%'),
     marginRight: hp('2%'),
     marginTop: hp('2%'),
     elevation: wp('1%'),

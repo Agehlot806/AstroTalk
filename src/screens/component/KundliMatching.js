@@ -19,6 +19,7 @@ import {COLOR, FONT, FONT_SIZE} from '../../Providerscreen/Globles';
 import IocalImage from '../../Providerscreen/IocalImage';
 import WhiteBackArrow from '../../Icons/Svg/WhiteBackArrow.svg';
 import Whatsapp from '../../Icons/Svg/Whatsapp.svg';
+import Pressure from '../../Icons/Svg/Pressure.svg';
 
 const KundliMatching = ({navigation}) => {
   const [selectIndex, setSelectIndex] = useState(-1);
@@ -89,39 +90,66 @@ const KundliMatching = ({navigation}) => {
   };
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor={COLOR.SkyBLUE} barStyle="dark-content" />
+      <StatusBar backgroundColor={COLOR.SkyBLUE} barStyle="Light-content" />
 
       {/* --------Header ------- */}
-      <View
-        style={{
-          //   marginVertical: hp('2%'),
-          flexDirection: 'row',
-          alignItems: 'center',
-          alignSelf: 'center',
-          width: wp('100%'),
-          backgroundColor: COLOR.SkyBLUE,
-        }}>
-        <TouchableOpacity onPress={() => navigation.goBack('')}>
-          <WhiteBackArrow height={hp('6%')} width={wp('8%')} />
-        </TouchableOpacity>
-        <View style={{width: wp('65%')}}>
-          <Text style={[styles.headerTitle, {marginLeft: hp('1%')}]}>
-            Kundli Matching
-          </Text>
+      <ImageBackground style={styles.backImageView} source={IocalImage.SkyBlue}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            alignSelf: 'center',
+            width: wp('90%'),
+          }}>
+          <TouchableOpacity onPress={() => navigation.goBack('')}>
+            <WhiteBackArrow height={hp('6%')} width={wp('8%')} />
+          </TouchableOpacity>
+          <View style={{width: wp('60%')}}>
+            <Text style={[styles.headerTitle, {marginLeft: hp('1%')}]}>
+              Kundli Matching
+            </Text>
+          </View>
+          <Image
+            source={IocalImage.Subtract}
+            style={{
+              height: hp('3%'),
+              width: wp('6%'),
+              resizeMode: 'contain',
+              tintColor: 'white',
+            }}
+          />
+          <TouchableOpacity
+            style={styles.Imageheadiew}
+            onPress={() => navigation.navigate('KundliMatching')}>
+            <Whatsapp height={hp('3%')} width={wp('4%')} />
+            <Text style={styles.smallText}> Share</Text>
+          </TouchableOpacity>
         </View>
-        <Image
-          source={IocalImage.Subtract}
-          style={{height: hp('3%'), width: wp('6%'), resizeMode: 'contain'}}
-        />
-        <TouchableOpacity
-          style={styles.Imageheadiew}
-          onPress={() => navigation.navigate('KundliMatching')}>
-          <Whatsapp height={hp('3%')} width={wp('4%')} />
-          <Text style={styles.smallText}> Share</Text>
-        </TouchableOpacity>
-      </View>
+        {/* --------- Presure View ------ */}
+        <View
+          style={{
+            alignSelf: 'center',
+            justifyContent: 'center',
+            marginTop: hp('15%'),
+          }}>
+          <Pressure height={hp('12%')} width={wp('30%')} />
+        </View>
+        <View
+          style={{
+            backgroundColor: 'skyblue',
+            width: wp('23%'),
+            padding: wp('1.5%'),
+            alignSelf: 'center',
+            borderRadius: hp('1%'),
+          }}>
+          <Text style={[styles.blueText, {textAlign: 'center'}]}>26/30</Text>
+        </View>
+      </ImageBackground>
       {/* ---------- header end --- */}
-      <ScrollView style={{flexGrow: 1}} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={{flexGrow: 1, paddingHorizontal: hp('2%')}}
+        showsVerticalScrollIndicator={false}>
         {/* ------Detail ----------- */}
         <FlatList
           data={Detaillist}
@@ -372,23 +400,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLOR.WHITE,
-    paddingHorizontal: hp('2.4%'),
+    // paddingHorizontal: hp('2.4%'),
+  },
+  backImageView: {
+    height: hp('42.5%'),
+    width: wp('100%'),
+    resizeMode: 'cover',
   },
   headerTitle: {
     fontSize: FONT_SIZE.F_17,
     fontFamily: FONT.BOLD,
-    color: COLOR.DARK_BLUE,
+    color: COLOR.WHITE,
   },
   Imageheadiew: {
     flexDirection: 'row',
-    width: '17%',
+    // width: '17%',
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
     borderColor: COLOR.YELLOW,
     borderWidth: wp('0.2%'),
     borderRadius: hp('0.5%'),
-    marginLeft: wp('2%'),
+    marginHorizontal: wp('2%'),
     paddingHorizontal: wp('4%'),
   },
   subheadlineText: {
@@ -398,14 +431,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   MediumText: {
-    // marginVertical: wp('2%'),
     fontFamily: FONT.SEMI_BOLD,
     fontSize: FONT_SIZE.F_14,
     color: COLOR.DARK_BLUE,
     textAlign: 'left',
   },
   smallText: {
-    // marginVertical: wp('2%'),
     fontFamily: FONT.SEMI_BOLD,
     fontSize: FONT_SIZE.F_11,
     color: COLOR.LIGHT_GRAY,

@@ -21,9 +21,10 @@ import Searchicon from '../../Icons/Svg/Searchicon.svg';
 import AtoZ from '../../Icons/Svg/AtoZ.svg';
 import StarMoon from '../../Icons/Svg/StarMoon.svg';
 import Fliter from '../../Icons/Svg/Fliter.svg';
-import {Screen} from '../../constant/screen';
+import Footer from '../../Providerscreen/Footer';
 
 const CallandChat = ({navigation}) => {
+  const [activePageName, setActivePageName] = useState(2);
   const [name, setName] = useState('');
   const [dateBirth, setDateBirth] = useState('');
   const [timeBirth, setTimeBirth] = useState('');
@@ -94,8 +95,8 @@ const CallandChat = ({navigation}) => {
           flexDirection: 'row',
           alignItems: 'center',
         }}>
-        <Menuicon height={hp('6%')} width={wp('8%')} />
-        <View style={{width: '65%'}}>
+        <Menuicon height={hp('6%')} width={wp('7%')} />
+        <View style={{}}>
           <Text style={[styles.headerTitle, {marginLeft: hp('1%')}]}>
             Call & Chat With Astro
           </Text>
@@ -103,6 +104,8 @@ const CallandChat = ({navigation}) => {
         <View
           style={{
             width: '20%',
+            marginHorizontal: hp('2%'),
+            marginRight: hp('2%'),
             flexDirection: 'row',
             alignSelf: 'flex-end',
             alignItems: 'center',
@@ -110,7 +113,6 @@ const CallandChat = ({navigation}) => {
           }}>
           <View
             style={{
-              width: '60%',
               borderColor: COLOR.YELLOW,
               borderWidth: wp('0.2%'),
             }}>
@@ -120,7 +122,7 @@ const CallandChat = ({navigation}) => {
         </View>
       </TouchableOpacity>
 
-      <ScrollView style={{flexGrow: 1}}>
+      <ScrollView style={{flexGrow: 1}} showsVerticalScrollIndicator={false}>
         {/* ---------- TextInput view ----- */}
         <View style={{marginTop: hp('1.5%')}}>
           <View style={styles.TextView}>
@@ -168,6 +170,7 @@ const CallandChat = ({navigation}) => {
           renderItem={({item, index}) => {
             return (
               <TouchableOpacity
+                activeOpacity={1}
                 onPress={() => navigation.navigate('AstroDetail')}>
                 <View style={styles.cardView}>
                   <Image source={item.image} style={styles.astroImage} />
@@ -287,6 +290,7 @@ const CallandChat = ({navigation}) => {
           }}
         />
       </ScrollView>
+      <Footer activePageName={activePageName} />
     </View>
   );
 };
@@ -375,11 +379,18 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: hp('3%'),
     padding: hp('1%'),
-    elevation: 0.4,
     width: wp('89%'),
-    // marginRight: hp('2%'),
     marginTop: hp('2%'),
     marginBottom: wp('2%'),
+    backgroundColor: COLOR.WHITE,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.14,
+    elevation: 4,
   },
 
   imageView: {
