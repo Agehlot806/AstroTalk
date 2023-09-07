@@ -16,7 +16,7 @@ import {
 import IocalImage from '../../Providerscreen/IocalImage';
 import CommonButton from '../../Providerscreen/CommonButton';
 import {Screen} from '../../constant/screen';
-
+import EditNumber from '../../Icons/Svg/EditIcon.svg'
 const OTPVerification = ({navigation, route}) => {
   const number = route?.params?.Number;
 
@@ -33,8 +33,11 @@ const OTPVerification = ({navigation, route}) => {
             Enter OTP code send to your number
           </Text>
           <Text style={styles.otpText}>{number}</Text>
+          <View style={{alignSelf:'center',marginTop:hp('-3.5%'),marginRight:hp('12%')}}>
+
+        <TouchableOpacity><EditNumber /></TouchableOpacity>
+          </View>
         </View>
-        <TouchableOpacity>{/* <EditNumber /> */}</TouchableOpacity>
         <View style={styles.OTPcontainer}>
           {/* {otpValues.map((value, index) => ( */}
           <View style={[styles.inputContainer]}>
@@ -81,7 +84,7 @@ const OTPVerification = ({navigation, route}) => {
         <View style={styles.TextView}>
           <CommonButton
             ButtonText={'Verification'}
-            HandleNext={() => navigation.navigate('Language')}
+            HandleNext={() => navigation.navigate('BasicDetails')}
           />
         </View>
       </ImageBackground>

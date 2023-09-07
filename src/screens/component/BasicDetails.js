@@ -439,8 +439,9 @@ const BasicDetails = () => {
         <View
           style={{
             marginVertical: hp('0.4%'),
-            width: wp('90%'),
-            marginLeft: hp('2.3%'),
+            width: wp('80%'),
+            alignSelf:'center',
+            alignItems:'center',
             backgroundColor: '#F0F0F7',
             paddingVertical: hp('1%'),
             borderBottomEndRadius: hp('2%'),
@@ -461,12 +462,13 @@ const BasicDetails = () => {
                     onPress={() => setSelectedItemIndex(index)}
                     style={{
                       backgroundColor: isSelected ? COLOR.YELLOW : COLOR.WHITE,
-                      padding: hp('2%'),
+                      padding: hp('1.5%'),
+                     
                       // borderWidth:1,
                       // borderColor:isSelected ?  COLOR.YELLOW: COLOR.DARK_BLUE,
                       borderRadius: hp('2%'),
-                      marginLeft: hp('1.6%'),
-                      width: wp('40%'),
+                      marginLeft: hp('1%'),
+                      width: wp('32%'),
                     }}>
                     <Text
                       style={{
@@ -481,11 +483,16 @@ const BasicDetails = () => {
               );
             }}
           />
-          {/* ----------kundaliNorth Image */}
-          <View style={{alignSelf: 'center', marginTop: hp('4%')}}>
+         
+        </View>
+         {/* ----------kundaliNorth Image */}
+         <View style={{alignSelf: 'center', marginTop: hp('4%')}}>
             <Image source={IocalImage.KundaliNorth} />
           </View>
-        </View>
+          {/* ----------kundaliSouth Image */}
+         <View style={{alignSelf: 'center', marginTop: hp('2%')}}>
+            <Image source={IocalImage.KundaliNorth} />
+          </View>
         {/* -----------Planets------------- */}
         <Text
           style={{
