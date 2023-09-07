@@ -548,8 +548,7 @@ const BasicDetails = () => {
             style={{
               width: wp('90%'),
               alignSelf: 'center',
-              shadowOpacity: 0.2,
-              shadowRadius: 2,
+              
               // Elevation for Android
               elevation: 6,
               borderTopLeftRadius: hp('2.9%'),
@@ -570,7 +569,8 @@ const BasicDetails = () => {
               textStyle={{
                 color: COLOR.DARK_BLUE,
                 textAlign: 'center',
-                fontWeight: '100',
+                fontFamily:FONT.MEDIUM,
+                fontSize:FONT_SIZE.F_12
               }}
               style={{
                 height: hp('6%'),
@@ -853,11 +853,14 @@ const BasicDetails = () => {
             />
             <Rows
               data={Planetsdata}
-              textStyle={{color: COLOR.DARK_BLUE, textAlign: 'center'}}
+              textStyle={{color: COLOR.DARK_BLUE, textAlign: 'center',
+              fontSize:FONT_SIZE.F_13,
+              fontFamily:FONT.MEDIUM}}
               style={{
                 height: hp('6%'),
                 backgroundColor: COLOR.WHITE,
                 alignSelf: 'center',
+                
               }}
             />
           </Table>
@@ -897,11 +900,13 @@ const BasicDetails = () => {
             />
             <Rows
               data={Planetsdata}
-              textStyle={{color: COLOR.DARK_BLUE, textAlign: 'center'}}
+              textStyle={{color: COLOR.DARK_BLUE, textAlign: 'center', fontSize:FONT_SIZE.F_12,
+              fontFamily:FONT.MEDIUM}}
               style={{
                 height: hp('6%'),
                 backgroundColor: COLOR.WHITE,
                 alignSelf: 'center',
+               
               }}
             />
           </Table>
@@ -941,11 +946,13 @@ const BasicDetails = () => {
             />
             <Rows
               data={Planetsdata}
-              textStyle={{textAlign: 'center', color: COLOR.DARK_BLUE}}
+              textStyle={{textAlign: 'center', color: COLOR.DARK_BLUE, fontSize:FONT_SIZE.F_12,
+              fontFamily:FONT.MEDIUM}}
               style={{
                 height: hp('6%'),
                 backgroundColor: COLOR.WHITE,
                 alignSelf: 'center',
+               
               }}
             />
           </Table>
@@ -985,11 +992,13 @@ const BasicDetails = () => {
             />
             <Rows
               data={Planetsdata}
-              textStyle={{color: COLOR.DARK_BLUE, textAlign: 'center'}}
+              textStyle={{color: COLOR.DARK_BLUE, textAlign: 'center',fontSize:FONT_SIZE.F_12,
+              fontFamily:FONT.MEDIUM}}
               style={{
                 height: hp('6%'),
                 backgroundColor: COLOR.WHITE,
                 alignSelf: 'center',
+                
               }}
             />
           </Table>
@@ -1029,7 +1038,7 @@ const BasicDetails = () => {
                     style={{
                       backgroundColor: isSelected
                         ? COLOR.YELLOW
-                        : COLOR.ExtLIGHT_GRAY,
+                        : COLOR.GRAY,
                       // width: wp('20%'),
                       padding: hp('1%'),
                       borderRadius: hp('2%'),
@@ -1082,7 +1091,7 @@ const BasicDetails = () => {
                     style={{
                       backgroundColor: isSelected
                         ? COLOR.YELLOW
-                        : COLOR.ExtLIGHT_GRAY,
+                        : COLOR.GRAY,
 
                       padding: hp('1.4%'),
                       borderRadius: hp('2%'),
@@ -1139,11 +1148,13 @@ const BasicDetails = () => {
             />
             <Rows
               data={Planetsdata}
-              textStyle={{color: COLOR.DARK_BLUE, textAlign: 'center'}}
+              textStyle={{color: COLOR.DARK_BLUE, textAlign: 'center',fontSize:FONT_SIZE.F_12,
+              fontFamily:FONT.MEDIUM}}
               style={{
                 height: hp('6%'),
                 backgroundColor: COLOR.WHITE,
                 alignSelf: 'center',
+                
               }}
             />
           </Table>
@@ -1557,11 +1568,14 @@ const BasicDetails = () => {
             />
             <Rows
               data={Planetsdata}
-              textStyle={{color: COLOR.DARK_BLUE, textAlign: 'center'}}
+              textStyle={{color: COLOR.DARK_BLUE, textAlign: 'center',fontSize:FONT_SIZE.F_12,
+              fontFamily:FONT.MEDIUM}}
               style={{
                 height: hp('6%'),
                 backgroundColor: COLOR.WHITE,
                 alignSelf: 'center',
+                fontSize:FONT_SIZE.F_12,
+                fontFamily:FONT.MEDIUM
               }}
             />
           </Table>
@@ -3016,12 +3030,13 @@ const BasicDetails = () => {
               borderWidth: 1,
               borderRadius: 10,
               flexDirection: 'row',
+              elevation:1
             }}>
             <View style={{width: wp('40%')}}>
               <Text
                 style={{
                   fontSize: FONT_SIZE.F_16,
-                  padding: hp('2%'),
+                  padding: hp('1.5%'),
                   color: COLOR.DARK_BLUE,
                 }}>
                 Life Stone for Gemini
@@ -3029,7 +3044,7 @@ const BasicDetails = () => {
               <Text
                 style={{
                   fontSize: FONT_SIZE.F_16,
-                  padding: hp('2%'),
+                  padding: hp('1.5%'),
                   color: COLOR.DARK_BLUE,
                 }}>
                 How to wear
@@ -3037,7 +3052,7 @@ const BasicDetails = () => {
               <Text
                 style={{
                   fontSize: FONT_SIZE.F_16,
-                  padding: hp('2%'),
+                  padding: hp('1.5%'),
                   color: COLOR.DARK_BLUE,
                 }}>
                 Mamtra
@@ -3047,7 +3062,7 @@ const BasicDetails = () => {
               <Text
                 style={{
                   fontSize: FONT_SIZE.F_16,
-                  padding: hp('2%'),
+                  padding: hp('1.5%'),
                   color: COLOR.DARK_BLUE,
                 }}>
                 Emerald ( Panna)
@@ -3055,7 +3070,7 @@ const BasicDetails = () => {
               <Text
                 style={{
                   fontSize: FONT_SIZE.F_16,
-                  padding: hp('2%'),
+                  padding: hp('1.5%'),
                   color: COLOR.DARK_BLUE,
                 }}>
                 Gold, in ring or little finger
@@ -3063,7 +3078,7 @@ const BasicDetails = () => {
               <Text
                 style={{
                   fontSize: FONT_SIZE.F_16,
-                  padding: hp('2%'),
+                  padding: hp('1.5%'),
                   color: COLOR.DARK_BLUE,
                 }}>
                 Om bram brim braum{' '}
@@ -3113,12 +3128,13 @@ const BasicDetails = () => {
               borderWidth: 1,
               borderRadius: 10,
               flexDirection: 'row',
+              elevation:1
             }}>
-            <View style={{width: wp('40%')}}>
+            <View style={{width: wp('35%')}}>
               <Text
-                style={{
+                style={{  
                   fontSize: FONT_SIZE.F_16,
-                  padding: hp('2%'),
+                  padding: hp('1.5%'),
                   color: COLOR.DARK_BLUE,
                 }}>
                 Fortune Stone for Gemini
@@ -3126,7 +3142,7 @@ const BasicDetails = () => {
               <Text
                 style={{
                   fontSize: FONT_SIZE.F_16,
-                  padding: hp('2%'),
+                  padding: hp('1.5%'),
                   color: COLOR.DARK_BLUE,
                 }}>
                 How to wear
@@ -3134,7 +3150,7 @@ const BasicDetails = () => {
               <Text
                 style={{
                   fontSize: FONT_SIZE.F_16,
-                  padding: hp('2%'),
+                  padding: hp('1.5%'),
                   color: COLOR.DARK_BLUE,
                 }}>
                 Mamtra
@@ -3144,7 +3160,7 @@ const BasicDetails = () => {
               <Text
                 style={{
                   fontSize: FONT_SIZE.F_16,
-                  padding: hp('2%'),
+                  padding: hp('1.5%'),
                   color: COLOR.DARK_BLUE,
                 }}>
                 Blue Sapphire (Neelam)
@@ -3152,7 +3168,7 @@ const BasicDetails = () => {
               <Text
                 style={{
                   fontSize: FONT_SIZE.F_16,
-                  padding: hp('2%'),
+                  padding: hp('1.5%'),
                   color: COLOR.DARK_BLUE,
                 }}>
                 Gold, in ring or little finger
@@ -3160,7 +3176,7 @@ const BasicDetails = () => {
               <Text
                 style={{
                   fontSize: FONT_SIZE.F_16,
-                  padding: hp('2%'),
+                  padding: hp('1.5%'),
                   color: COLOR.DARK_BLUE,
                 }}>
                 Om bram brim braum sah budhaya namah{' '}
@@ -3360,7 +3376,7 @@ const BasicDetails = () => {
             />
             <Rows
               data={KalsarpaData}
-              textStyle={{color: COLOR.LIGHT_GRAY, textAlign: 'center'}}
+              textStyle={{color: COLOR.DARK_BLUE, textAlign: 'center',fontSize:FONT_SIZE.F_12}}
               style={{
                 height: hp('6%'),
                 backgroundColor: COLOR.WHITE,

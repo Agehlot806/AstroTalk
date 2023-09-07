@@ -361,13 +361,19 @@ export const GeneralTab =[
 
 ];
   export const PlanetsHeader= 
-     ['Planets','Sign','Sign Lord' ,' Degree House'
+     ['Planets','Sign','Sign Lord' ,' Degree ','House'
     ]
    export const Planetsdata = [
-      ['gfg1', 'gfg2', 'gfg3','1'],
-      ['gfg4', 'gfg5', 'gfg6','1'],
-      ['gfg7', 'gfg8', 'gfg9','1'],
-      ['gfg7', 'gfg8', 'gfg9','1']
+      ['Scendant', 'Gemini', 'Mercury','1°46','1'],
+      ['Scendant', 'Gemini', 'Mercury','1°46','1'],
+      ['Scendant', 'Gemini', 'Mercury','1°46','1'],
+      ['Scendant', 'Gemini', 'Mercury','1°46','1'],
+      ['Scendant', 'Gemini', 'Mercury','1°46','1'],
+      ['Scendant', 'Gemini', 'Mercury','1°46','1'],
+      ['Scendant', 'Gemini', 'Mercury','1°46','1'],
+      ['Scendant', 'Gemini', 'Mercury','1°46','1'],
+      ['Scendant', 'Gemini', 'Mercury','1°46','1'],
+      ['Scendant', 'Gemini', 'Mercury','1°46','1'],
 
 
   ]
@@ -376,10 +382,12 @@ export const GeneralTab =[
      ['Start','End','Sing Name' ,' Type'
     ]
    export const KalsarpaData = [
-      ['17-Apr-1998', 'gfg2', 'gfg3','1'],
-      ['gfg4', 'gfg5', 'gfg6','1'],
-      ['gfg7', 'gfg8', 'gfg9','1'],
-      ['gfg7', 'gfg8', 'gfg9','1']
+      ['17-Apr-1998', '6-jun-2000', 'Aries','Rising'],
+      ['17-Apr-1998', '6-jun-2000', 'Aries','Rising'],
+      ['17-Apr-1998', '6-jun-2000', 'Aries','Rising'],
+      ['17-Apr-1998', '6-jun-2000', 'Aries','Rising'],
+      ['17-Apr-1998', '6-jun-2000', 'Aries','Rising'],
+      ['17-Apr-1998', '6-jun-2000', 'Aries','Rising']
 
 
   ]
