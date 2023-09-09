@@ -28,7 +28,7 @@ export default IocalImage = {
   Banner_3: require('../Icons/Images/Banner_3.png'),
   Banner_4: require('../Icons/Images/Banner_4.png'),
   Dots: require('../Icons/Images/Dots.png'),
-  Login_BgImage: require('../Icons/Images/Login_BgImage.jpg'),
+  Login_BgImage: require('../Icons/Images/Login_BgImage.png'),
   Goback: require('../Icons/Images/Goback.png'),
   Avtar: require('../Icons/Images/Avtar.png'),
   Whatsapp: require('../Icons/Images/Whatsapp.png'),
@@ -36,6 +36,7 @@ export default IocalImage = {
   Rectangle_1: require('../Icons/Images/Rectangle_1.png'),
   Rectangle_2: require('../Icons/Images/Rectangle_2.png'),
   KundaliNorth: require('../Icons/Images/KundaliNorth.png'),
+  KundaliSouth: require('../Icons/Images/KundaliSouth.png'),
 
   // ---------- Footer icon ---------
   ActiveHome: require('../Icons/Images/ActiveHome.png'),

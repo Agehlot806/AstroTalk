@@ -29,7 +29,7 @@ const BannerFirst = ({navigation}) => {
 
   return (
     <View style={styles.mainContainer}>
-      <StatusBar backgroundColor={COLOR.DARK_BLUE} barStyle={'light-content'} />
+      <StatusBar backgroundColor={'transparent'} translucent />
       <Swiper
         style={styles.wrapper}
         // showsButtons={true}  //this for < and > icon

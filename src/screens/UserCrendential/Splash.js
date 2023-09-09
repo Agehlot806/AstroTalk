@@ -22,7 +22,7 @@ const Splash = ({navigation}) => {
   }, 3000);
   return (
     <View style={styles.mainContainer}>
-      <StatusBar backgroundColor={'#ffff'} barStyle={'dark-content'} />
+      <StatusBar backgroundColor={'transparent'} translucent />
 
       <TouchableOpacity
         onPress={() => navigation.navigate(Screen.BANNERFIRST)}

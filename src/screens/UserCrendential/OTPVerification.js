@@ -7,6 +7,7 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  StatusBar
 } from 'react-native';
 import {COLOR, WHITE, FONT, FONT_SIZE} from '../../Providerscreen/Globles';
 import {
@@ -17,11 +18,23 @@ import IocalImage from '../../Providerscreen/IocalImage';
 import CommonButton from '../../Providerscreen/CommonButton';
 import {Screen} from '../../constant/screen';
 import EditNumber from '../../Icons/Svg/EditIcon.svg'
+import {useDispatch, useSelector} from 'react-redux';
+
 const OTPVerification = ({navigation, route}) => {
+  const {response} = useSelector(state => state.authReducer);
   const number = route?.params?.Number;
+
+  const handleVerification = () => {
+    if(response?.data?.phoneno === 'Existing'){
+      navigation.navigate('Home')
+    }else {
+      navigation.navigate('Language')
+    }
+  }
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor={'transparent'}translucent />
       <ImageBackground
         source={IocalImage.Login_BgImage}
         style={styles.RectangleImage}>
@@ -84,7 +97,7 @@ const OTPVerification = ({navigation, route}) => {
         <View style={styles.TextView}>
           <CommonButton
             ButtonText={'Verification'}
-            HandleNext={() => navigation.navigate('BasicDetails')}
+            HandleNext={() => handleVerification()}
           />
         </View>
       </ImageBackground>
@@ -101,7 +114,7 @@ const styles = StyleSheet.create({
 
   RectangleImage: {
     flex: 1,
-    resizeMode: 'cover',
+    resizeMode: 'contain',
   },
   otpText: {
     color: COLOR.WHITE,

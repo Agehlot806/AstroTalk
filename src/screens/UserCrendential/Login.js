@@ -1,12 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  Image,
-  ScrollView,
   StatusBar,
-  TouchableOpacity,
   ImageBackground,
   Alert,
 } from 'react-native';
@@ -15,60 +12,64 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import {COLOR, FONT, FONT_SIZE} from '../../Providerscreen/Globles';
-// import EmailIcon from '../../Icon/Svg/EmailIcon.svg';
 import PhoneNumberInput from 'react-native-phone-number-input';
 import IocalImage from '../../Providerscreen/IocalImage';
 import CommonButton from '../../Providerscreen/CommonButton';
-import {Screen} from '../../constant/screen';
 import axios from 'axios';
+import {useDispatch, useSelector} from 'react-redux';
+import {UserLogin} from '../../Redux/actions/AuthAction';
+import ErrorMessage from '../../Utils/ErrorMessage';
 
 const Login = ({navigation}) => {
+  const dispatch = useDispatch();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [countryCode, setCountryCode] = useState('');
+  const {response} = useSelector(state => state.authReducer);
+  console.log('response in loGIN', response);
   const handlePhoneInputChange = number => {
     setPhoneNumber(number);
   };
+  useEffect(() => {
+    if (response?.status === 201) {
+      navigation.navigate('OTPVerification', {Number: phoneNumber});
+    }
+  }, [response]);
 
   const PostData = async () => {
     if (phoneNumber === '') {
-      Alert.alert('Please enter the number');
+      ErrorMessage({
+        msg: 'Please enter the number',
+        backgroundColor: COLOR.RED,
+      });
+      // Alert.alert('Please enter the number');
       return; // Exit the function early if phone number is empty
     } else if (phoneNumber.length < 10) {
-      Alert.alert('Please enter at least 10 digits of the number');
+      ErrorMessage({
+        msg: 'Please enter at least 10 digits of the number',
+        backgroundColor: COLOR.RED,
+      });
+      // Alert.alert('Please enter at least 10 digits of the number');
       return; // Exit the function early if phone number is too short
     }
 
-    try {
-      const response = await axios.post(
-        'https://astrotalk.techpanda.art/base/user-login/',
-        {
-          phoneno: phoneNumber,
-        },
-      );
-
-      console.log('Response Status:', response.status);
-      console.log('Response Data:', response.data);
-
-      if (response.status === 201) {
-        Alert.alert('Sucessfull');
-        navigation.navigate('OTPVerification', {Number: phoneNumber});
-      } else {
-        navigation.navigate('Login', {
-          LoginPhone: JSON.parse(response.config.data).cust_phone,
-        });
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      if (error.response) {
-        console.log('Response Status:', error.response.status);
-        console.log('Response Data:', error.response.data);
-      }
-    }
+    dispatch(UserLogin(phoneNumber));
+    // try {
+    //   const response = await axios.post(
+    //     'https://astrotalk.techpanda.art/base/user-login/',
+    //     {
+    //       phoneno: phoneNumber,
+    //     },
+    //   );
+    //   console.log('Response Status:', response.status);
+    //   console.log('Response Data:', response.data);
+    // } catch (error) {
+    //   console.error('Error:', error);
+    // }
   };
 
   return (
     <View style={styles.mainContainer}>
-      <StatusBar backgroundColor={COLOR.DARK_BLUE} />
+      <StatusBar backgroundColor={'transparent'} translucent />
       <ImageBackground
         source={IocalImage.Login_BgImage}
         style={styles.ImageContainer}>
