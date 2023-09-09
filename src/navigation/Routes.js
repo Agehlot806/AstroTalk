@@ -6,7 +6,7 @@ import {Screen} from '../constant/screen';
 
 // Screens
 import Splash from '../screens/UserCrendential/Splash';
-import Banner1 from '../screens/UserCrendential/Banner1';
+import BannerFirst from '../screens/UserCrendential/BannerFirst';
 import Language from '../screens/UserCrendential/Language';
 import Profile from '../screens/ProfileScreen/Profile';
 import PlaceBirth from '../screens/ProfileScreen/PlaceBirth';
@@ -23,6 +23,11 @@ import LiveChat from '../screens/component/LiveChat';
 import IncomingCall from '../screens/component/IncomingCall';
 import Notification from '../screens/component/Notification';
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
+import Login from '../screens/UserCrendential/Login';
+import OTPVerification from '../screens/UserCrendential/OTPVerification';
+import BasicDetails from '../screens/component/BasicDetails';
+import SimilarAstrologer from '../screens/component/SimilarAstrologer';
+import CreateNewKundali from '../screens/component/CreateNewKundali';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,13 +36,16 @@ const Routes = () => {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{headerShown: false}}
-        initialRouteName="Language">
+        initialRouteName="Splash">
         <Stack.Screen name={Screen.SPLASH} component={Splash} />
-        <Stack.Screen name={Screen.BANNER1} component={Banner1} />
+        <Stack.Screen name={Screen.BANNERFIRST} component={BannerFirst} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="OTPVerification" component={OTPVerification} />
         <Stack.Screen name={Screen.LANGUAGE} component={Language} />
         <Stack.Screen name={Screen.PROFILE} component={Profile} />
         <Stack.Screen name={Screen.HOME} component={Home} />
         <Stack.Screen name="Notification" component={Notification} />
+        <Stack.Screen name="BasicDetails" component={BasicDetails} />
         <Stack.Screen name="PlaceBirth" component={PlaceBirth} />
         <Stack.Screen name="CallandChat" component={CallandChat} />
         <Stack.Screen name="Pooja" component={Pooja} />
@@ -49,6 +57,8 @@ const Routes = () => {
         <Stack.Screen name="LiveChat" component={LiveChat} />
         <Stack.Screen name="IncomingCall" component={IncomingCall} />
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+        <Stack.Screen name="SimilarAstrologer" component={SimilarAstrologer} />
+        <Stack.Screen name="CreateNewKundali" component={CreateNewKundali} />
         <Stack.Screen
           name="KundliNewandDelete"
           component={KundliNewandDelete}

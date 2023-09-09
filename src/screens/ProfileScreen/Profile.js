@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     borderWidth: wp('0.5%'),
   },
   textView: {
-    width: wp('20%'),
+    // width: wp('20%'),
     padding: hp('1%'),
     paddingHorizontal: hp('1.6%'),
     marginRight: wp('5%'),
