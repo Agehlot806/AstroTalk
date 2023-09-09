@@ -21,6 +21,7 @@ export const COLOR = {
   LIGHT_GRAY: '#b5bdb7',
   MEDIUM_GRAY: '#626066',
   ExtLIGHT_GRAY: '#c7d1c9',
+  RED: 'red'
 };
 
 export const FONT = {

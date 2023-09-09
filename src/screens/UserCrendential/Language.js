@@ -15,19 +15,25 @@ import {
 import {COLOR, FONT, FONT_SIZE} from '../../Providerscreen/Globles';
 import Back from '../../Icons/Svg/Back.svg';
 import CommonButton from '../../Providerscreen/CommonButton';
+import { useDispatch, useSelector } from "react-redux";
+import { getLanguage } from '../../Redux/actions/AuthAction';
 
 const Language = ({navigation}) => {
   const [value, setValue] = useState('');
-  const languageArray = [
-    {id: 1, title: 'Hindi'},
-    {id: 2, title: 'English'},
-    {id: 3, title: 'Bangali'},
-    {id: 4, title: 'Gujarati'},
-    {id: 5, title: 'Marathi'},
-    {id: 6, title: 'Panjabi'},
-    {id: 7, title: 'Telugu'},
-    {id: 8, title: 'Urdu'},
-  ];
+  const [languageArray, setLanguageArray] = useState([])
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    dispatch(getLanguage());
+  }, [dispatch]);
+
+  const { response } = useSelector((state) => state.authReducer);
+  
+  useEffect(() => {
+    const languageArray = Array.isArray(response) ? response : [];
+    setLanguageArray(languageArray);
+  }, [response]);
+  
 
   const LanguagePress = title => {
     setValue(title);
@@ -63,8 +69,8 @@ const Language = ({navigation}) => {
                     item.id === 1 || item.id === 2 ? COLOR.YELLOW : COLOR.GRAY,
                 },
               ]}
-              onPress={() => LanguagePress(item.title)}>
-              <Text style={styles.textStyle}>{item.title}</Text>
+              onPress={() => LanguagePress(item.name)}>
+              <Text style={styles.textStyle}>{item.name}</Text>
             </TouchableOpacity>
           </View>
         )}
