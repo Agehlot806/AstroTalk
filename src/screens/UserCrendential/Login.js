@@ -19,6 +19,7 @@ import axios from 'axios';
 import {useDispatch, useSelector} from 'react-redux';
 import {UserLogin} from '../../Redux/actions/AuthAction';
 import ErrorMessage from '../../Utils/ErrorMessage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = ({navigation}) => {
   const dispatch = useDispatch();
@@ -31,6 +32,9 @@ const Login = ({navigation}) => {
   };
   useEffect(() => {
     if (response?.status === 201) {
+      AsyncStorage.setItem('userId', JSON.stringify(response?.data?.user))
+      AsyncStorage.setItem('userInfo', JSON.stringify(response?.data))
+      AsyncStorage.setItem('userPhone', JSON.stringify(phoneNumber))
       navigation.navigate('OTPVerification', {Number: phoneNumber});
     }
   }, [response]);

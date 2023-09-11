@@ -21,25 +21,94 @@ import Calender from '../../Icons/Svg/Calender.svg';
 import Eclip from '../../Icons/Svg/Eclip.svg';
 import CommonButton from '../../Providerscreen/CommonButton';
 import {Screen} from '../../constant/screen';
+import DateTimePicker from '../../commonComponets/DateTimeModel';
+import moment from 'moment';
+import {useDispatch, useSelector} from 'react-redux';
+import {addUserProfile, removeAuthState} from '../../Redux/actions/AuthAction';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ErrorMessage from '../../Utils/ErrorMessage';
+const genderArray = [
+  {id: 1, title: 'Man', image: require('../../Icons/Images/Man.png')},
+  {id: 2, title: 'Woman', image: require('../../Icons/Images/Woman.png')},
+  {id: 3, title: 'Other', image: require('../../Icons/Images/Other.png')},
+];
 
 const Profile = ({navigation}) => {
+  const dispach = useDispatch();
   const [name, setName] = useState('');
   const [dateBirth, setDateBirth] = useState('');
   const [timeBirth, setTimeBirth] = useState('');
   const [city, setCity] = useState('');
   const [selectValue, setSelectValue] = useState('');
-  const genderArray = [
-    {id: 1, title: 'Man', image: require('../../Icons/Images/Man.png')},
-    {id: 2, title: 'Woman', image: require('../../Icons/Images/Woman.png')},
-    {id: 3, title: 'Other', image: require('../../Icons/Images/Other.png')},
-  ];
-  const LanguagePress = title => {
-    setSelectValue(title);
+  const [isDatePicker, setIsDatePicker] = useState(false);
+  const [isTimePicker, setIsTimePicker] = useState(false);
+  const {CreateRes} = useSelector(state => state.authReducer);
+  console.log('dateBirth', name, dateBirth, timeBirth, selectValue);
+  console.log('CreateRes', CreateRes);
+
+  useEffect(() => {
+    if (CreateRes?.status === 201) {
+      AsyncStorage.setItem('userId', JSON.stringify(CreateRes?.data?.userid))
+      dispach(removeAuthState());
+      navigation.navigate('Language')
+      setName('');
+      setDateBirth('');
+      setTimeBirth('');
+      setCity('');
+      setSelectValue('');
+    }
+  }, [CreateRes]);
+
+  const validation = () => {
+    let isError = true;
+    let errorMsg = '';
+    if (name === null || name === '') {
+      isError = false;
+      errorMsg = 'Name is required, Please enter the name';
+    } else if (selectValue === null || selectValue === '') {
+      isError = false;
+      errorMsg = 'Gender is required, Please Select the Gender';
+    } else if (dateBirth === null || dateBirth === '') {
+      isError = false;
+      errorMsg = 'Date of birth is required, Please Select the Date of birth';
+    } else if (timeBirth === null || timeBirth === '') {
+      isError = false;
+      errorMsg = 'Time of birth is required, Please Select the Time of birth';
+    } else if (city === null || city === '') {
+      isError = false;
+      errorMsg = 'Place of birth is required, Please enter the Place of birth';
+    }
+
+    if (errorMsg !== '') {
+      ErrorMessage({
+        msg: errorMsg,
+        backgroundColor: COLOR.RED,
+      });
+    }
+
+    return isError;
   };
 
+  const handleProfileSubmit = async () => {
+    const userInfo = await AsyncStorage.getItem('userPhone');
+    const userPhone = JSON.parse(userInfo);
+    console.log('userPhone',userPhone);
+    if (validation()) {
+      const params = {
+        // id: 1,
+        username: name,
+        phoneno: userPhone,
+        gender: selectValue,
+        dob: dateBirth,
+        pob: city,
+        tob: timeBirth,
+      };
+      dispach(addUserProfile(params));
+    }
+  };
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor={COLOR.ThemeColor} barStyle="dark-content" />
+      <StatusBar backgroundColor={COLOR.WHITE} barStyle="dark-content" />
       {/* --------Header ------- */}
       <TouchableOpacity
         onPress={() => navigation.goBack('')}
@@ -78,7 +147,7 @@ const Profile = ({navigation}) => {
               renderItem={({item}) => (
                 <View style={styles.listTab}>
                   <TouchableOpacity
-                    onPress={() => LanguagePress(item.title)}
+                    onPress={() => setSelectValue(item.title)}
                     style={[
                       styles.textView,
                       {
@@ -105,7 +174,9 @@ const Profile = ({navigation}) => {
             }}>
             <View>
               <Text style={styles.TitleHeadinge}>Date of Birth</Text>
-              <View style={styles.dateView}>
+              <TouchableOpacity
+                onPress={() => setIsDatePicker(true)}
+                style={styles.dateView}>
                 <TextInput
                   placeholder="DD/MM/YY"
                   placeholderTextColor={COLOR.LIGHT_GRAY}
@@ -113,15 +184,18 @@ const Profile = ({navigation}) => {
                   value={dateBirth}
                   onChangeText={text => setDateBirth(text)}
                   style={[styles.TextInputStyle, {width: wp('26%')}]}
+                  editable={false}
                 />
                 <Calender height={hp('3%')} width={wp('5%')} />
-              </View>
+              </TouchableOpacity>
             </View>
 
             {/* ------ Time OF Birth ------- */}
             <View>
               <Text style={styles.TitleHeadinge}>Time of Birth</Text>
-              <View style={styles.dateView}>
+              <TouchableOpacity
+                onPress={() => setIsTimePicker(true)}
+                style={styles.dateView}>
                 <TextInput
                   placeholder="Hr/min"
                   placeholderTextColor={COLOR.LIGHT_GRAY}
@@ -129,9 +203,10 @@ const Profile = ({navigation}) => {
                   value={timeBirth}
                   onChangeText={text => setTimeBirth(text)}
                   style={[styles.TextInputStyle, {width: wp('26%')}]}
+                  editable={false}
                 />
                 <Eclip height={hp('3%')} width={wp('5%')} />
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
 
@@ -158,11 +233,28 @@ const Profile = ({navigation}) => {
           <View style={{marginTop: hp('15%')}}>
             <CommonButton
               ButtonText={'Verification'}
-              HandleNext={() => navigation.navigate('PlaceBirth')}
+              HandleNext={() => handleProfileSubmit()}
             />
           </View>
         </View>
       </ScrollView>
+      {/* DateTimePicker */}
+      <DateTimePicker
+        type={'date'}
+        open={isDatePicker}
+        setOpen={setIsDatePicker}
+        setData={date => {
+          setDateBirth(moment(date).format('DD-MM-YY'));
+        }}
+      />
+      <DateTimePicker
+        type={'time'}
+        open={isTimePicker}
+        setOpen={setIsTimePicker}
+        setData={date => {
+          setTimeBirth(moment(date).format('LT'));
+        }}
+      />
     </View>
   );
 };
@@ -210,8 +302,9 @@ const styles = StyleSheet.create({
     borderWidth: wp('0.5%'),
   },
   textView: {
-    // width: wp('20%'),
-    padding: hp('1%'),
+    width: wp('20%'),
+    height: wp('20%'),
+    // padding: hp('1%'),
     paddingHorizontal: hp('1.6%'),
     marginRight: wp('5%'),
     borderRadius: hp('2%'),
@@ -219,7 +312,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   textStyle: {
-    fontSize: FONT_SIZE.F_15,
+    fontSize: hp('1.8%'),
     fontFamily: FONT.MEDIUM,
     color: COLOR.WHITE,
     textAlign: 'center',

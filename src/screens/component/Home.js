@@ -19,17 +19,36 @@ import {COLOR, FONT, FONT_SIZE} from '../../Providerscreen/Globles';
 import Menuicon from '../../Icons/Svg/Menuicon.svg';
 import Searchicon from '../../Icons/Svg/Searchicon.svg';
 import Youtude from '../../Icons/Svg/Youtude.svg';
-import CommonButton from '../../Providerscreen/CommonButton';
-import {Screen} from '../../constant/screen';
 import Footer from '../../Providerscreen/Footer';
+import {useDispatch, useSelector} from 'react-redux';
+import {getAstrologers, getHoroscopeCategory, getZodics} from '../../Redux/actions/HomeAction';
+import {IMAGE_URL} from '../../Utils/constant';
 
 const Home = ({navigation}) => {
+  const dispatch = useDispatch();
   const [activePageName, setActivePageName] = useState(0);
   const [name, setName] = useState('');
-  const [dateBirth, setDateBirth] = useState('');
-  const [timeBirth, setTimeBirth] = useState('');
-  const [city, setCity] = useState('');
-  const [selectValue, setSelectValue] = useState('');
+  const [horoscopes, setHoroscopes] = useState([]);
+  const [zodics, setZodics] = useState([]);
+  const [astrologers, setAstrologers] = useState([]);
+  const {response, ZodicRes, AstroRes} = useSelector(state => state.homeState);
+
+  useEffect(() => {
+    dispatch(getHoroscopeCategory());
+    dispatch(getZodics());
+    dispatch(getAstrologers());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const category = Array.isArray(response) ? response : [];
+    const Zodics = Array.isArray(ZodicRes) ? ZodicRes?.slice(0, 4) : [];
+    const Astrologer = Array.isArray(AstroRes) ? AstroRes : [];
+    setHoroscopes(category);
+    setZodics(Zodics);
+    setAstrologers(Astrologer);
+  }, [response, ZodicRes, AstroRes]);
+
+
   const CategoryArray = [
     {
       id: 1,
@@ -153,7 +172,7 @@ const Home = ({navigation}) => {
 
         {/* --------- Horoscope list ------- */}
         <FlatList
-          data={CategoryArray}
+          data={horoscopes}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           renderItem={({item, index}) => {
@@ -168,14 +187,19 @@ const Home = ({navigation}) => {
                       backgroundColor: item.id === 1 ? COLOR.YELLOW : '#F8F8FA',
                     },
                   ]}>
-                  <Image source={item.image} style={styles.cateImage} />
+                  <Image
+                    source={{
+                      uri: IMAGE_URL + item.catpicture,
+                    }}
+                    style={styles.cateImage}
+                  />
                 </View>
                 <Text
                   style={[
                     styles.subheadlineText,
                     {width: wp('20%'), marginVertical: wp('2%')},
                   ]}>
-                  {item.title}
+                  {item.catname}
                 </Text>
               </TouchableOpacity>
             );
@@ -212,7 +236,7 @@ const Home = ({navigation}) => {
           </TouchableOpacity>
         </View>
         <FlatList
-          data={ZodiaArray}
+          data={zodics}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           renderItem={({item, index}) => {
@@ -225,7 +249,12 @@ const Home = ({navigation}) => {
                       backgroundColor: COLOR.WHITE,
                     },
                   ]}>
-                  <Image source={item.image} style={styles.cateImage} />
+                  <Image
+                    source={{
+                      uri: IMAGE_URL + item.horoscopeimg,
+                    }}
+                    style={styles.cateImage}
+                  />
                 </View>
                 <Text
                   style={[
@@ -236,7 +265,7 @@ const Home = ({navigation}) => {
                       marginVertical: wp('2%'),
                     },
                   ]}>
-                  {item.title}
+                  {item.catname}
                 </Text>
               </View>
             );
@@ -262,7 +291,7 @@ const Home = ({navigation}) => {
           </TouchableOpacity>
         </View>
         <FlatList
-          data={ZodiaArray}
+          data={astrologers}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           renderItem={({item, index}) => {
@@ -271,7 +300,9 @@ const Home = ({navigation}) => {
                 <View style={styles.cardView}>
                   <View style={styles.imageView}>
                     <Image
-                      source={require('../../Icons/Images/Astrologist.png')}
+                      source={{
+                        uri: IMAGE_URL + item.panditpicture,
+                      }}
                       style={styles.astroImage}
                     />
                     <View
@@ -279,8 +310,6 @@ const Home = ({navigation}) => {
                         flexDirection: 'row',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        // width: wp('10%'),
-                        // backgroundColor: 'red',
                       }}>
                       <Image
                         source={require('../../Icons/Images/Message.png')}
@@ -307,7 +336,7 @@ const Home = ({navigation}) => {
                       styles.subheadlineText,
                       {color: COLOR.DARK_BLUE, textAlign: 'left'},
                     ]}>
-                    Leslie
+                    {item.name}
                   </Text>
                   <View
                     style={{
@@ -320,14 +349,14 @@ const Home = ({navigation}) => {
                         styles.MediumText,
                         {color: COLOR.GRAY, textAlign: 'left'},
                       ]}>
-                      Card Specialis
+                      {item.expertise_in.substring(0, 13)}...
                     </Text>
                     <Text
                       style={[
                         styles.subheadlineText,
                         {color: COLOR.YELLOW, marginLeft: wp('2%')},
                       ]}>
-                      $ 10/M
+                      ₹ {item.price}
                     </Text>
                     <Text
                       style={[
@@ -568,7 +597,7 @@ const styles = StyleSheet.create({
     borderRadius: hp('3%'),
     padding: hp('1%'),
     marginHorizontal: hp('0.3%'),
-    elevation: 0.4,
+    elevation: 1,
     width: wp('20%'),
     marginRight: hp('2%'),
     marginTop: hp('2%'),
@@ -582,8 +611,8 @@ const styles = StyleSheet.create({
     marginVertical: hp('2%'),
   },
   cateImage: {
-    height: hp('8%'),
-    width: wp('8%'),
+    height: hp('10%'),
+    width: wp('10%'),
     resizeMode: 'contain',
   },
   liveAstroImage: {
