@@ -15,28 +15,69 @@ import {
 import {COLOR, FONT, FONT_SIZE} from '../../Providerscreen/Globles';
 import Back from '../../Icons/Svg/Back.svg';
 import CommonButton from '../../Providerscreen/CommonButton';
-import { useDispatch, useSelector } from "react-redux";
-import { getLanguage } from '../../Redux/actions/AuthAction';
+import {useDispatch, useSelector} from 'react-redux';
+import ErrorMessage from '../../Utils/ErrorMessage';
+import {
+  addLanguage,
+  getLanguage,
+  removeAuthState,
+} from '../../Redux/actions/AuthAction';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Language = ({navigation}) => {
-  const [value, setValue] = useState('');
-  const [languageArray, setLanguageArray] = useState([])
+  const [value, setValue] = useState([]);
+  const [languageArray, setLanguageArray] = useState([]);
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     dispatch(getLanguage());
   }, [dispatch]);
 
-  const { response } = useSelector((state) => state.authReducer);
-  
+  const {response, CreateRes} = useSelector(state => state.authReducer);
+  console.log('CreateRes', CreateRes);
   useEffect(() => {
     const languageArray = Array.isArray(response) ? response : [];
     setLanguageArray(languageArray);
-  }, [response]);
-  
+    if (CreateRes?.status === 201) {
+      dispatch(removeAuthState());
+      setValue([]);
+      navigation.navigate('Home');
+    }
+  }, [response, CreateRes]);
 
-  const LanguagePress = title => {
-    setValue(title);
+  const handleSelect = item => {
+    setLanguageArray(prevLanguageArray => {
+      const index = prevLanguageArray.findIndex(el => el.id === item.id);
+
+      if (index === -1) return prevLanguageArray;
+
+      const updatedArray = [...prevLanguageArray];
+      updatedArray[index].isSelected = !item?.isSelected;
+
+      const updatedValue = updatedArray
+        .filter(el => el.isSelected)
+        .map(el => el.name);
+
+      setValue(updatedValue);
+      return updatedArray;
+    });
+  };
+
+  const handleSubmit = async () => {
+   const userId =  await AsyncStorage.getItem('userId');
+   console.log('userId',userId);
+    if (value && value.length > 0) {
+      const params = {
+        user: JSON.parse(userId),
+        language: {data: value},
+      };
+      dispatch(addLanguage(params));
+    } else {
+      ErrorMessage({
+        msg: 'Please select at least one language',
+        backgroundColor: COLOR.RED,
+      });
+    }
   };
 
   return (
@@ -65,11 +106,10 @@ const Language = ({navigation}) => {
               style={[
                 styles.textView,
                 {
-                  backgroundColor:
-                    item.id === 1 || item.id === 2 ? COLOR.YELLOW : COLOR.GRAY,
+                  backgroundColor: item.isSelected ? COLOR.YELLOW : COLOR.GRAY,
                 },
               ]}
-              onPress={() => LanguagePress(item.name)}>
+              onPress={() => handleSelect(item)}>
               <Text style={styles.textStyle}>{item.name}</Text>
             </TouchableOpacity>
           </View>
@@ -78,10 +118,7 @@ const Language = ({navigation}) => {
 
       {/* ---------- Button ------ */}
       <View style={{marginBottom: hp('3%')}}>
-        <CommonButton
-          ButtonText={'Submit'}
-          HandleNext={() => navigation.navigate('Profile')}
-        />
+        <CommonButton ButtonText={'Submit'} HandleNext={() => handleSubmit()} />
       </View>
     </View>
   );

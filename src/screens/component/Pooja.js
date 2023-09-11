@@ -21,56 +21,72 @@ import Star from '../../Icons/Svg/Star.svg';
 import Whatsapp from '../../Icons/Svg/Whatsapp.svg';
 import CommonButton from '../../Providerscreen/CommonButton';
 import Footer from '../../Providerscreen/Footer';
+import {useDispatch, useSelector} from 'react-redux';
+import {getPoojaCategory, getPoojas} from '../../Redux/actions/PoojaAction';
+import {IMAGE_URL} from '../../Utils/constant';
+const CategyArray = [
+  {
+    id: 1,
+    title: 'All',
+  },
+  {
+    id: 2,
+    title: 'Love',
+  },
+  {
+    id: 3,
+    title: 'Education',
+  },
+  {
+    id: 4,
+    title: 'Career',
+  },
+];
 
+const ZodiaArray = [
+  {
+    id: 1,
+    title: 'Sanatan prapti pooja',
+    image: require('../../Icons/Images/pooja1.png'),
+    User: require('../../Icons/Images/User2.png'),
+  },
+  {
+    id: 2,
+    title: 'Sanatan prapti poojaTaurus',
+    image: require('../../Icons/Images/pooja2.png'),
+    User: require('../../Icons/Images/User1.png'),
+  },
+  {
+    id: 3,
+    title: 'Sanatan prapti pooja',
+    image: require('../../Icons/Images/pooja3.png'),
+    User: require('../../Icons/Images/User3.png'),
+  },
+  {
+    id: 4,
+    title: 'Sanatan prapti pooja',
+    image: require('../../Icons/Images/pooja2.png'),
+    User: require('../../Icons/Images/User2.png'),
+  },
+];
 const Pooja = ({navigation}) => {
+  const dispatch = useDispatch();
   const [activePageName, setActivePageName] = useState(3);
-  const [city, setCity] = useState('');
-  const [selectValue, setSelectValue] = useState('');
-  const CategyArray = [
-    {
-      id: 1,
-      title: 'All',
-    },
-    {
-      id: 2,
-      title: 'Love',
-    },
-    {
-      id: 3,
-      title: 'Education',
-    },
-    {
-      id: 4,
-      title: 'Career',
-    },
-  ];
+  const [poojaCategory, setPoojaCategory] = useState([]);
+  const [poojasData, setPoojasData] = useState([]);
+  const {response, poojas} = useSelector(state => state.pooja);
 
-  const ZodiaArray = [
-    {
-      id: 1,
-      title: 'Sanatan prapti pooja',
-      image: require('../../Icons/Images/pooja1.png'),
-      User: require('../../Icons/Images/User2.png'),
-    },
-    {
-      id: 2,
-      title: 'Sanatan prapti poojaTaurus',
-      image: require('../../Icons/Images/pooja2.png'),
-      User: require('../../Icons/Images/User1.png'),
-    },
-    {
-      id: 3,
-      title: 'Sanatan prapti pooja',
-      image: require('../../Icons/Images/pooja3.png'),
-      User: require('../../Icons/Images/User3.png'),
-    },
-    {
-      id: 4,
-      title: 'Sanatan prapti pooja',
-      image: require('../../Icons/Images/pooja2.png'),
-      User: require('../../Icons/Images/User2.png'),
-    },
-  ];
+  useEffect(() => {
+    dispatch(getPoojaCategory());
+    dispatch(getPoojas());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const catData = Array.isArray(response) ? response : [];
+    const pooja = Array.isArray(poojas) ? poojas : [];
+    setPoojaCategory(catData);
+    setPoojasData(pooja);
+  }, [response, poojas]);
 
   return (
     <View style={styles.container}>
@@ -121,7 +137,7 @@ const Pooja = ({navigation}) => {
       <ScrollView style={{flexGrow: 1}} showsVerticalScrollIndicator={false}>
         {/* --------- categ list ------- */}
         <FlatList
-          data={CategyArray}
+          data={poojaCategory}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           renderItem={({item, index}) => {
@@ -135,7 +151,7 @@ const Pooja = ({navigation}) => {
                         item.id === 1 ? COLOR.YELLOW : COLOR.GRAY,
                     },
                   ]}>
-                  <Text style={[styles.CategoryText]}>{item.title}</Text>
+                  <Text style={[styles.CategoryText]}>{item.catname}</Text>
                 </View>
               </View>
             );
@@ -145,7 +161,7 @@ const Pooja = ({navigation}) => {
         {/* ------------ Astrologer ----------- */}
 
         <FlatList
-          data={ZodiaArray}
+          data={poojas}
           showsVerticalScrollIndicator={false}
           renderItem={({item, index}) => {
             return (
@@ -153,7 +169,9 @@ const Pooja = ({navigation}) => {
                 <View style={styles.cardView}>
                   <ImageBackground
                     imageStyle={{borderRadius: hp('2%')}}
-                    source={item.image}
+                    source={{
+                      uri: IMAGE_URL + item.pojapicture,
+                    }}
                     style={styles.astroImage}>
                     <Image
                       source={item.User}
@@ -181,7 +199,7 @@ const Pooja = ({navigation}) => {
                           styles.subheadlineText,
                           {color: COLOR.DARK_BLUE},
                         ]}>
-                        {item.title}
+                        {item.name}
                       </Text>
                       <View
                         style={{
@@ -237,7 +255,7 @@ const Pooja = ({navigation}) => {
                           {color: COLOR.DARK_BLUE},
                           {color: COLOR.DARK_BLUE, marginTop: hp('-2%')},
                         ]}>
-                        $ 125.00
+                        ₹ {item.price}
                       </Text>
                       <Text
                         style={[

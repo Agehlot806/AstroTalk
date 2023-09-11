@@ -28,7 +28,7 @@ const OTPVerification = ({navigation, route}) => {
     if(response?.data?.phoneno === 'Existing'){
       navigation.navigate('Home')
     }else {
-      navigation.navigate('Language')
+      navigation.navigate('Profile')
     }
   }
 

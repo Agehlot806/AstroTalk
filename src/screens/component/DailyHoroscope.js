@@ -47,7 +47,7 @@ const DailyHoroscope = ({navigation}) => {
   const Days = [
     {id: 1, title: 'Yesterday'},
     {id: 2, title: 'Today'},
-    {id: 2, title: 'Tomorrow'},
+    {id: 3, title: 'Tomorrow'},
   ];
 
   const Detaillist = [
