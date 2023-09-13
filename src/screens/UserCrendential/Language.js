@@ -1,3 +1,4 @@
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,7 +8,6 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -25,8 +25,9 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Language = ({navigation}) => {
-  const [value, setValue] = useState([]);
-  const [languageArray, setLanguageArray] = useState([]);
+  const [selectedLanguage, setSelectedLanguage] = useState(null);
+  const [languageAPIData, setLanguageAPIData] = useState([]);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -34,42 +35,44 @@ const Language = ({navigation}) => {
   }, [dispatch]);
 
   const {response, CreateRes} = useSelector(state => state.authReducer);
-  console.log('CreateRes', CreateRes);
+
   useEffect(() => {
     const languageArray = Array.isArray(response) ? response : [];
-    setLanguageArray(languageArray);
+    setLanguageAPIData(languageArray);
     if (CreateRes?.status === 201) {
       dispatch(removeAuthState());
-      setValue([]);
+      setSelectedLanguage(null); // Reset the selected language
       navigation.navigate('Home');
     }
   }, [response, CreateRes]);
 
   const handleSelect = item => {
-    setLanguageArray(prevLanguageArray => {
-      const index = prevLanguageArray.findIndex(el => el.id === item.id);
+    if (selectedLanguage) {
+      // Deselect the previously selected language
+      setLanguageAPIData(prevLanguageArray =>
+        prevLanguageArray.map(el => ({
+          ...el,
+          isSelected: false,
+        })),
+      );
+    }
 
-      if (index === -1) return prevLanguageArray;
-
-      const updatedArray = [...prevLanguageArray];
-      updatedArray[index].isSelected = !item?.isSelected;
-
-      const updatedValue = updatedArray
-        .filter(el => el.isSelected)
-        .map(el => el.name);
-
-      setValue(updatedValue);
-      return updatedArray;
-    });
+    // Select the current language
+    setLanguageAPIData(prevLanguageArray =>
+      prevLanguageArray.map(el =>
+        el.id === item.id ? {...el, isSelected: true} : el,
+      ),
+    );
+    setSelectedLanguage(item);
   };
 
   const handleSubmit = async () => {
-   const userId =  await AsyncStorage.getItem('userId');
-   console.log('userId',userId);
-    if (value && value.length > 0) {
+    const userId =await AsyncStorage.getItem('userId');
+
+    if (selectedLanguage) {
       const params = {
         user: JSON.parse(userId),
-        language: {data: value},
+        language: selectedLanguage.name,
       };
       dispatch(addLanguage(params));
     } else {
@@ -92,11 +95,11 @@ const Language = ({navigation}) => {
 
       <Text style={styles.headerTitle}>Select all your languages ?</Text>
       <Text style={[styles.subHeadinge, {marginTop: hp('2%')}]}>
-        Lorem Ipsum is simply dummy text of the
+        Select The Languages Which You Know
       </Text>
       {/* -------- FlatList language ----------- */}
       <FlatList
-        data={languageArray}
+        data={languageAPIData}
         keyExtractor={item => item.id.toString()}
         contentContainerStyle={{marginTop: hp('3%')}}
         numColumns={3}
@@ -106,7 +109,11 @@ const Language = ({navigation}) => {
               style={[
                 styles.textView,
                 {
-                  backgroundColor: item.isSelected ? COLOR.YELLOW : COLOR.GRAY,
+                  backgroundColor: item.isSelected
+                    ? COLOR.YELLOW
+                    : selectedLanguage === item
+                    ? COLOR.YELLOW
+                    : COLOR.GRAY,
                 },
               ]}
               onPress={() => handleSelect(item)}>

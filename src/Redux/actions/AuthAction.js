@@ -6,7 +6,7 @@ import {LANGUAGE_ADD, LANGUAGE_GET, PROFILE_ADD, REMOVE_AUTH} from '../Types';
 export const UserLogin = params => async dispatch => {
   try {
     const res = await apiCall('post', apiEndPoints.LOGIN, {phoneno: params});
-    console.log('res in login', res);
+    console.log('res in login', res.data);
     if (res.status === 200) {
       dispatch({
         type: LANGUAGE_GET,
@@ -46,24 +46,40 @@ export const getLanguage = () => async dispatch => {
   }
 };
 
+// export const addLanguage = params => async dispatch => {
+//   console.log('+++++++++++++++++++++', params);
+//   try {
+//     const res = await apiCall('post', apiEndPoints.LANGUAGEPOST, params);
+//     console.log('res in lag add', res);
+//     if (res.status === 200) {
+//       dispatch({
+//         type: LANGUAGE_ADD,
+//         payload: res,
+//       });
+//     } else if (res.status === 201) {
+//       dispatch({
+//         type: LANGUAGE_ADD,
+//         payload: res,
+//       });
+//     }
+//   } catch (error) {
+//     console.log('error in add lang');
+//   }
+// };
+
 export const addLanguage = params => async dispatch => {
-  console.log(params);
+  console.log('+++++++++++++++++++++', params);
   try {
     const res = await apiCall('post', apiEndPoints.LANGUAGEPOST, params);
-    console.log('res in lag add', res);
-    if (res.status === 200) {
-      dispatch({
-        type: LANGUAGE_ADD,
-        payload: res,
-      });
-    } else if (res.status === 201) {
+    console.log('Add Lang Res ------> ', res.data);
+    if (res.status === 200 || res.status === 201) {
       dispatch({
         type: LANGUAGE_ADD,
         payload: res,
       });
     }
   } catch (error) {
-    console.log('error in add lang');
+    console.log('error in add lang', error);
   }
 };
 
@@ -83,12 +99,11 @@ export const addUserProfile = params => async dispatch => {
   }
 };
 
-
 export const removeAuthState = () => async dispach => {
   try {
     dispach({
       type: REMOVE_AUTH,
       payload: null,
-    })
+    });
   } catch (error) {}
 };
