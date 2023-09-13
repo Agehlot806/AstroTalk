@@ -38,26 +38,21 @@ const Profile = ({navigation}) => {
   const [name, setName] = useState('');
   const [dateBirth, setDateBirth] = useState('');
   const [timeBirth, setTimeBirth] = useState('');
-  const [city, setCity] = useState('');
-  const [selectValue, setSelectValue] = useState('');
+  const [selectGender, setSelectGender] = useState('');
   const [isDatePicker, setIsDatePicker] = useState(false);
   const [isTimePicker, setIsTimePicker] = useState(false);
+  const [placeOfBirth, setPlaceOfBirth] = useState('');
   const {CreateRes} = useSelector(state => state.authReducer);
-  console.log('dateBirth', name, dateBirth, timeBirth, selectValue);
-  console.log('CreateRes', CreateRes);
 
-  useEffect(() => {
-    if (CreateRes?.status === 201) {
-      AsyncStorage.setItem('userId', JSON.stringify(CreateRes?.data?.userid))
-      dispach(removeAuthState());
-      navigation.navigate('Language')
-      setName('');
-      setDateBirth('');
-      setTimeBirth('');
-      setCity('');
-      setSelectValue('');
-    }
-  }, [CreateRes]);
+  console.log(
+    'InPutFieldData--------',
+    // name,
+    // selectGender,
+    // dateBirth,
+    // timeBirth,
+    // placeOfBirth,
+  );
+  console.log('CreateRes', CreateRes);
 
   const validation = () => {
     let isError = true;
@@ -65,7 +60,7 @@ const Profile = ({navigation}) => {
     if (name === null || name === '') {
       isError = false;
       errorMsg = 'Name is required, Please enter the name';
-    } else if (selectValue === null || selectValue === '') {
+    } else if (selectGender === null || selectGender === '') {
       isError = false;
       errorMsg = 'Gender is required, Please Select the Gender';
     } else if (dateBirth === null || dateBirth === '') {
@@ -74,7 +69,7 @@ const Profile = ({navigation}) => {
     } else if (timeBirth === null || timeBirth === '') {
       isError = false;
       errorMsg = 'Time of birth is required, Please Select the Time of birth';
-    } else if (city === null || city === '') {
+    } else if (placeOfBirth === null || placeOfBirth === '') {
       isError = false;
       errorMsg = 'Place of birth is required, Please enter the Place of birth';
     }
@@ -92,20 +87,34 @@ const Profile = ({navigation}) => {
   const handleProfileSubmit = async () => {
     const userInfo = await AsyncStorage.getItem('userPhone');
     const userPhone = JSON.parse(userInfo);
-    console.log('userPhone',userPhone);
+    console.log('userPhone', userPhone);
     if (validation()) {
       const params = {
         // id: 1,
         username: name,
         phoneno: userPhone,
-        gender: selectValue,
+        gender: selectGender,
         dob: dateBirth,
-        pob: city,
+        pob: placeOfBirth,
         tob: timeBirth,
       };
       dispach(addUserProfile(params));
     }
   };
+
+  useEffect(() => {
+    if (CreateRes?.status === 201) {
+      AsyncStorage.setItem('userId', JSON.stringify(CreateRes?.data?.userid));
+      dispach(removeAuthState());
+      navigation.navigate('Language');
+      setName('');
+      setDateBirth('');
+      setTimeBirth('');
+      setPlaceOfBirth('');
+      setSelectGender('');
+    }
+  }, [CreateRes]);
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={COLOR.WHITE} barStyle="dark-content" />
@@ -147,12 +156,12 @@ const Profile = ({navigation}) => {
               renderItem={({item}) => (
                 <View style={styles.listTab}>
                   <TouchableOpacity
-                    onPress={() => setSelectValue(item.title)}
+                    onPress={() => setSelectGender(item.title)}
                     style={[
                       styles.textView,
                       {
                         backgroundColor:
-                          selectValue === item.title
+                          selectGender === item.title
                             ? COLOR.YELLOW
                             : COLOR.GRAY,
                       },
@@ -222,8 +231,8 @@ const Profile = ({navigation}) => {
                 placeholder="Enter City"
                 placeholderTextColor={COLOR.LIGHT_GRAY}
                 keyboardType="default"
-                value={city}
-                onChangeText={text => setCity(text)}
+                value={placeOfBirth}
+                onChangeText={text => setPlaceOfBirth(text)}
                 style={styles.TextInputStyle}
               />
             </View>

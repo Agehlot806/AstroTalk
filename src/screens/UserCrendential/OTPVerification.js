@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  StatusBar
+  StatusBar,
 } from 'react-native';
 import {COLOR, WHITE, FONT, FONT_SIZE} from '../../Providerscreen/Globles';
 import {
@@ -17,24 +17,55 @@ import {
 import IocalImage from '../../Providerscreen/IocalImage';
 import CommonButton from '../../Providerscreen/CommonButton';
 import {Screen} from '../../constant/screen';
-import EditNumber from '../../Icons/Svg/EditIcon.svg'
+import EditNumber from '../../Icons/Svg/EditIcon.svg';
 import {useDispatch, useSelector} from 'react-redux';
 
 const OTPVerification = ({navigation, route}) => {
   const {response} = useSelector(state => state.authReducer);
+  const [otp, setOTP] = useState(['', '', '', '']);
+  console.log(otp);
+  const otpString = otp.join('');
+  const [newOtp, setNewOTP] = useState(otpString);
+  useEffect(() => {
+    const newOtpString = otp.join('');
+    setNewOTP(newOtpString);
+  }, [otp]);
+
+  console.log(newOtp);
+
   const number = route?.params?.Number;
+  const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
+
+  useEffect(() => {
+    inputRefs[0].current.focus();
+  }, []);
+
+  const handleInputChange = (text, index) => {
+    const newOTP = [...otp];
+    newOTP[index] = text;
+
+    setOTP(newOTP);
+
+    if (text && index < 3) {
+      inputRefs[index + 1].current.focus();
+    } else if (!text && index > 0) {
+      inputRefs[index - 1].current.focus();
+    }
+  };
 
   const handleVerification = () => {
-    if(response?.data?.phoneno === 'Existing'){
-      navigation.navigate('Home')
-    }else {
-      navigation.navigate('Profile')
+    const enteredOTP = otp.join('');
+
+    if (response?.data?.phoneno === 'Existing') {
+      navigation.navigate('Home');
+    } else {
+      navigation.navigate('Profile');
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor={'transparent'}translucent />
+      <StatusBar backgroundColor={'transparent'} translucent />
       <ImageBackground
         source={IocalImage.Login_BgImage}
         style={styles.RectangleImage}>
@@ -46,51 +77,33 @@ const OTPVerification = ({navigation, route}) => {
             Enter OTP code send to your number
           </Text>
           <Text style={styles.otpText}>{number}</Text>
-          <View style={{alignSelf:'center',marginTop:hp('-3.5%'),marginRight:hp('12%')}}>
-
-        <TouchableOpacity><EditNumber /></TouchableOpacity>
+          <View
+            style={{
+              alignSelf: 'center',
+              marginTop: hp('-3.5%'),
+              marginRight: hp('12%'),
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('Login');
+              }}>
+              <EditNumber height={hp('3%')} width={wp('5%')} />
+            </TouchableOpacity>
           </View>
         </View>
         <View style={styles.OTPcontainer}>
-          {/* {otpValues.map((value, index) => ( */}
-          <View style={[styles.inputContainer]}>
-            <TextInput
-              style={[styles.input]}
-              keyboardType="numeric"
-              maxLength={1}
-              // onChangeText={(text) => handleInputChange(text, index)}
-              // value={value}
-            />
-          </View>
-          <View style={[styles.inputContainer]}>
-            <TextInput
-              style={[styles.input]}
-              keyboardType="numeric"
-              maxLength={1}
-              // onChangeText={(text) => handleInputChange(text, index)}
-              // value={value}
-            />
-          </View>
-          <View style={[styles.inputContainer]}>
-            <TextInput
-              style={[styles.input]}
-              keyboardType="numeric"
-              maxLength={1}
-              // onChangeText={(text) => handleInputChange(text, index)}
-              // value={value}
-            />
-          </View>
-          <View style={[styles.inputContainer]}>
-            <TextInput
-              style={[styles.input]}
-              keyboardType="numeric"
-              maxLength={1}
-              // onChangeText={(text) => handleInputChange(text, index)}
-              // value={value}
-            />
-          </View>
-
-          {/* ))} */}
+          {otp.map((value, index) => (
+            <View style={[styles.inputContainer]} key={index}>
+              <TextInput
+                ref={inputRefs[index]}
+                style={[styles.input]}
+                keyboardType="numeric"
+                maxLength={1}
+                onChangeText={text => handleInputChange(text, index)}
+                value={value}
+              />
+            </View>
+          ))}
         </View>
 
         {/* Button */}
@@ -106,6 +119,7 @@ const OTPVerification = ({navigation, route}) => {
 };
 
 export default OTPVerification;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -124,12 +138,12 @@ const styles = StyleSheet.create({
   },
   BtnStyle: {
     backgroundColor: COLOR.DARK_BLUE,
-    padding: 13,
+    // padding: hp('13%'),
     width: wp('75%'),
     marginTop: hp('10%'),
     alignSelf: 'center',
-    borderRadius: 20,
-    borderWidth: 1,
+    // borderRadius: 20,
+    // borderWidth: 1,
     borderColor: '#ffff',
   },
   BtnText: {
@@ -143,18 +157,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   inputContainer: {
-    borderWidth: 1,
+    borderWidth: hp('0.2%'),
     borderColor: 'gray',
-    borderRadius: 8,
+    borderRadius: hp('1%'),
     marginHorizontal: hp('1.3%'),
     justifyContent: 'center',
     alignItems: 'center',
     width: wp('15%'),
-    // backgroundColor: COLOR.ThemeColor,
     height: hp('8%'),
   },
   input: {
-    fontSize: 20,
+    fontSize: hp('2%'),
+    color: '#FFFFFF',
   },
   TextView: {
     marginTop: hp('20%'),
