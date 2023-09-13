@@ -28,6 +28,7 @@ import OTPVerification from '../screens/UserCrendential/OTPVerification';
 import BasicDetails from '../screens/component/BasicDetails';
 import SimilarAstrologer from '../screens/component/SimilarAstrologer';
 import CreateNewKundali from '../screens/component/CreateNewKundali';
+import CustomTab from './CustomTab';
 
 const Stack = createNativeStackNavigator();
 
@@ -37,13 +38,14 @@ const Routes = () => {
       <Stack.Navigator
         screenOptions={{headerShown: false}}
         initialRouteName="Splash">
-        <Stack.Screen name={Screen.SPLASH} component={Splash} />
+        {/* <Stack.Screen name={Screen.SPLASH} component={Splash} />
         <Stack.Screen name={Screen.BANNERFIRST} component={BannerFirst} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="OTPVerification" component={OTPVerification} />
         <Stack.Screen name={Screen.LANGUAGE} component={Language} />
-        <Stack.Screen name={Screen.PROFILE} component={Profile} />
-        <Stack.Screen name={Screen.HOME} component={Home} />
+        <Stack.Screen name={Screen.PROFILE} component={Profile} /> */}
+        {/* <Stack.Screen name={Screen.HOME} component={Home} /> */}
+        <Stack.Screen name={Screen.HOME} component={CustomTab} />
         <Stack.Screen name="Notification" component={Notification} />
         <Stack.Screen name="BasicDetails" component={BasicDetails} />
         <Stack.Screen name="PlaceBirth" component={PlaceBirth} />
