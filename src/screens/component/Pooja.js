@@ -162,6 +162,7 @@ const Pooja = ({navigation}) => {
 
         <FlatList
           data={poojas}
+          contentContainerStyle={{marginBottom: hp('13%')}}
           showsVerticalScrollIndicator={false}
           renderItem={({item, index}) => {
             return (
@@ -274,7 +275,7 @@ const Pooja = ({navigation}) => {
           }}
         />
       </ScrollView>
-      <Footer activePageName={activePageName} />
+      {/* <Footer activePageName={activePageName} /> */}
     </View>
   );
 };

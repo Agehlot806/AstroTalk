@@ -166,6 +166,7 @@ const CallandChat = ({navigation}) => {
         <FlatList
           data={astroaArray}
           //   horizontal={true}
+          contentContainerStyle={{marginBottom: hp('13%')}}
           showsHorizontalScrollIndicator={false}
           renderItem={({item, index}) => {
             return (
@@ -290,7 +291,7 @@ const CallandChat = ({navigation}) => {
           }}
         />
       </ScrollView>
-      <Footer activePageName={activePageName} />
+      {/* <Footer activePageName={activePageName} /> */}
     </View>
   );
 };

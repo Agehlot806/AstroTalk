@@ -520,7 +520,7 @@ const Home = ({navigation}) => {
           <Text style={styles.titleHead}>Ranbir kapur talk Astrotalk </Text>
         </View>
       </ScrollView>
-      <Footer activePageName={activePageName} />
+      {/* <Footer activePageName={activePageName} /> */}
     </View>
   );
 };
