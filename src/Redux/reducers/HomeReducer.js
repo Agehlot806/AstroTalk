@@ -1,9 +1,10 @@
-import {GET_ASTROLOGERS, HOROSCOPE_CAT, ZODICS_GET} from '../Types';
+import {GET_ASTROLOGERS, GET_PRODUCT, HOROSCOPE_CAT, ZODICS_GET} from '../Types';
 
 const initialState = {
   response: null,
   ZodicRes: null,
-  AstroRes: null
+  AstroRes: null,
+  ProductRes: null
 };
 
 export const HomeReducer = (state = initialState, action) => {
@@ -22,6 +23,11 @@ export const HomeReducer = (state = initialState, action) => {
       return {
         ...state,
         AstroRes: action.payload,
+      };
+    case GET_PRODUCT:
+      return {
+        ...state,
+        ProductRes: action.payload,
       };
     default:
       return state;

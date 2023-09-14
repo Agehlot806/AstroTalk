@@ -22,14 +22,16 @@ import AtoZ from '../../Icons/Svg/AtoZ.svg';
 import StarMoon from '../../Icons/Svg/StarMoon.svg';
 import Fliter from '../../Icons/Svg/Fliter.svg';
 import Footer from '../../Providerscreen/Footer';
+import {useDispatch, useSelector} from 'react-redux';
+import {getAstrologers} from '../../Redux/actions/HomeAction';
+import { IMAGE_URL } from '../../Utils/constant';
 
 const CallandChat = ({navigation}) => {
-  const [activePageName, setActivePageName] = useState(2);
+  const dispatch = useDispatch();
   const [name, setName] = useState('');
-  const [dateBirth, setDateBirth] = useState('');
-  const [timeBirth, setTimeBirth] = useState('');
-  const [city, setCity] = useState('');
-  const [selectValue, setSelectValue] = useState('');
+  const [astrologers, setAstrologers] = useState([]);
+  const {AstroRes} = useSelector(state => state.homeState);
+
   const CategyArray = [
     {
       id: 1,
@@ -49,40 +51,15 @@ const CallandChat = ({navigation}) => {
     },
   ];
 
-  const astroaArray = [
-    {
-      id: 1,
-      title: 'Cody Fisher',
-      image: require('../../Icons/Images/User1.png'),
-      call: require('../../Icons/Images/CallGreen.png'),
-    },
-    {
-      id: 2,
-      title: 'Jenny Wilson',
-      image: require('../../Icons/Images/User2.png'),
-      call: require('../../Icons/Images/CallGreen.png'),
-    },
-    {
-      id: 3,
-      title: 'Gemini Jenny',
-      time: ' Wait 10 min',
-      image: require('../../Icons/Images/User3.png'),
-      call: require('../../Icons/Images/Redcall.png'),
-    },
-    {
-      id: 4,
-      title: 'Kerry Cody',
-      image: require('../../Icons/Images/User1.png'),
-      call: require('../../Icons/Images/CallGreen.png'),
-    },
-    {
-      id: 4,
-      title: 'Cancer',
-      time: ' Wait 10 min',
-      image: require('../../Icons/Images/User3.png'),
-      call: require('../../Icons/Images/Redcall.png'),
-    },
-  ];
+
+  useEffect(() => {
+    dispatch(getAstrologers());
+  }, []);
+
+  useEffect(() => {
+    const Astrologer = Array.isArray(AstroRes) ? AstroRes : [];
+    setAstrologers(Astrologer);
+  }, [AstroRes]);
 
   return (
     <View style={styles.container}>
@@ -164,17 +141,19 @@ const CallandChat = ({navigation}) => {
         {/* ------------ Astrologer ----------- */}
 
         <FlatList
-          data={astroaArray}
+          data={astrologers}
           //   horizontal={true}
           contentContainerStyle={{marginBottom: hp('13%')}}
           showsHorizontalScrollIndicator={false}
           renderItem={({item, index}) => {
             return (
               <TouchableOpacity
-                activeOpacity={1}
+                activeOpacity={0.6}
                 onPress={() => navigation.navigate('AstroDetail')}>
                 <View style={styles.cardView}>
-                  <Image source={item.image} style={styles.astroImage} />
+                  <Image source={{
+                    uri: IMAGE_URL + item.panditpicture
+                  }} style={styles.astroImage} />
 
                   <View
                     style={{
@@ -189,11 +168,11 @@ const CallandChat = ({navigation}) => {
                           styles.subheadlineText,
                           {color: COLOR.DARK_BLUE},
                         ]}>
-                        {item.title}
+                        {item.name}
                       </Text>
                       <Text
                         style={[styles.MediumText, {color: COLOR.DARK_BLUE}]}>
-                        5 Year experience
+                        {item.experience} experience
                       </Text>
                     </View>
                     <View
@@ -212,9 +191,9 @@ const CallandChat = ({navigation}) => {
                             marginLeft: wp('1%'),
                           },
                         ]}>
-                        English,Hindi
+                        {item.languages}
                         <Text style={[styles.smallText, {color: '#FD6A35'}]}>
-                          {'  '} $ 125
+                          {item.price}
                         </Text>
                       </Text>
                       <View
@@ -232,7 +211,7 @@ const CallandChat = ({navigation}) => {
                           }}
                         />
                         <Image
-                          source={item.call}
+                          source={require('../../Icons/Images/CallGreen.png')}
                           style={{
                             height: hp('4%'),
                             width: wp('8%'),
@@ -255,7 +234,7 @@ const CallandChat = ({navigation}) => {
                             marginHorizontal: wp('1%'),
                           },
                         ]}>
-                        Vedic,Vastu, pal..
+                        {item.expertise_in}
                       </Text>
                       <Star
                         height={hp('3%')}

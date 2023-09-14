@@ -1,4 +1,4 @@
-import { GET_POOJAS, GET_POOJA_CATEGORY } from "../Types";
+import { GET_POOJAS, GET_POOJAS_FILTER, GET_POOJA_CATEGORY } from "../Types";
 
 const initialState = {
     response: null,
@@ -13,6 +13,11 @@ const initialState = {
           response: action.payload,
         };
       case GET_POOJAS:
+        return {
+          ...state,
+          poojas: action.payload,
+        };
+      case GET_POOJAS_FILTER:
         return {
           ...state,
           poojas: action.payload,

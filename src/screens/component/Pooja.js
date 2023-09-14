@@ -22,60 +22,15 @@ import Whatsapp from '../../Icons/Svg/Whatsapp.svg';
 import CommonButton from '../../Providerscreen/CommonButton';
 import Footer from '../../Providerscreen/Footer';
 import {useDispatch, useSelector} from 'react-redux';
-import {getPoojaCategory, getPoojas} from '../../Redux/actions/PoojaAction';
+import {getByPoojaCategory, getPoojaCategory, getPoojas} from '../../Redux/actions/PoojaAction';
 import {IMAGE_URL} from '../../Utils/constant';
-const CategyArray = [
-  {
-    id: 1,
-    title: 'All',
-  },
-  {
-    id: 2,
-    title: 'Love',
-  },
-  {
-    id: 3,
-    title: 'Education',
-  },
-  {
-    id: 4,
-    title: 'Career',
-  },
-];
 
-const ZodiaArray = [
-  {
-    id: 1,
-    title: 'Sanatan prapti pooja',
-    image: require('../../Icons/Images/pooja1.png'),
-    User: require('../../Icons/Images/User2.png'),
-  },
-  {
-    id: 2,
-    title: 'Sanatan prapti poojaTaurus',
-    image: require('../../Icons/Images/pooja2.png'),
-    User: require('../../Icons/Images/User1.png'),
-  },
-  {
-    id: 3,
-    title: 'Sanatan prapti pooja',
-    image: require('../../Icons/Images/pooja3.png'),
-    User: require('../../Icons/Images/User3.png'),
-  },
-  {
-    id: 4,
-    title: 'Sanatan prapti pooja',
-    image: require('../../Icons/Images/pooja2.png'),
-    User: require('../../Icons/Images/User2.png'),
-  },
-];
 const Pooja = ({navigation}) => {
   const dispatch = useDispatch();
-  const [activePageName, setActivePageName] = useState(3);
+  const [activePageName, setActivePageName] = useState(0);
   const [poojaCategory, setPoojaCategory] = useState([]);
   const [poojasData, setPoojasData] = useState([]);
   const {response, poojas} = useSelector(state => state.pooja);
-
   useEffect(() => {
     dispatch(getPoojaCategory());
     dispatch(getPoojas());
@@ -87,6 +42,11 @@ const Pooja = ({navigation}) => {
     setPoojaCategory(catData);
     setPoojasData(pooja);
   }, [response, poojas]);
+
+  const handleCatChange = (index, id) => {
+    setActivePageName(index)
+    dispatch(getByPoojaCategory(id))
+  }
 
   return (
     <View style={styles.container}>
@@ -142,18 +102,17 @@ const Pooja = ({navigation}) => {
           showsHorizontalScrollIndicator={false}
           renderItem={({item, index}) => {
             return (
-              <View>
-                <View
+                <TouchableOpacity
+                onPress={() => handleCatChange(index, item.id)}
                   style={[
                     styles.HoroView,
                     {
                       backgroundColor:
-                        item.id === 1 ? COLOR.YELLOW : COLOR.GRAY,
+                        index === activePageName ? COLOR.YELLOW : COLOR.GRAY,
                     },
                   ]}>
                   <Text style={[styles.CategoryText]}>{item.catname}</Text>
-                </View>
-              </View>
+                </TouchableOpacity>
             );
           }}
         />
@@ -161,7 +120,7 @@ const Pooja = ({navigation}) => {
         {/* ------------ Astrologer ----------- */}
 
         <FlatList
-          data={poojas}
+          data={poojasData}
           contentContainerStyle={{marginBottom: hp('13%')}}
           showsVerticalScrollIndicator={false}
           renderItem={({item, index}) => {
@@ -273,6 +232,18 @@ const Pooja = ({navigation}) => {
               </TouchableOpacity>
             );
           }}
+          refreshing={false}
+          onRefresh={() => {
+            dispatch(getPoojas());
+          }}
+          ListEmptyComponent={() => (
+            <View style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+              <Text>No Data Found</Text>
+            </View>
+          )}
         />
       </ScrollView>
       {/* <Footer activePageName={activePageName} /> */}

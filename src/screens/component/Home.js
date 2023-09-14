@@ -21,7 +21,7 @@ import Searchicon from '../../Icons/Svg/Searchicon.svg';
 import Youtude from '../../Icons/Svg/Youtude.svg';
 import Footer from '../../Providerscreen/Footer';
 import {useDispatch, useSelector} from 'react-redux';
-import {getAstrologers, getHoroscopeCategory, getZodics} from '../../Redux/actions/HomeAction';
+import {getAstrologers, getHoroscopeCategory, getProducts, getZodics} from '../../Redux/actions/HomeAction';
 import {IMAGE_URL} from '../../Utils/constant';
 
 const Home = ({navigation}) => {
@@ -31,46 +31,26 @@ const Home = ({navigation}) => {
   const [horoscopes, setHoroscopes] = useState([]);
   const [zodics, setZodics] = useState([]);
   const [astrologers, setAstrologers] = useState([]);
-  const {response, ZodicRes, AstroRes} = useSelector(state => state.homeState);
-
+  const [products, setProducts] = useState([])
+  const {response, ZodicRes, AstroRes, ProductRes} = useSelector(state => state.homeState);
   useEffect(() => {
     dispatch(getHoroscopeCategory());
     dispatch(getZodics());
     dispatch(getAstrologers());
+    dispatch(getProducts())
   }, [dispatch]);
 
   useEffect(() => {
     const category = Array.isArray(response) ? response : [];
     const Zodics = Array.isArray(ZodicRes) ? ZodicRes?.slice(0, 4) : [];
     const Astrologer = Array.isArray(AstroRes) ? AstroRes : [];
+    const Product = Array.isArray(ProductRes) ? ProductRes : [];
     setHoroscopes(category);
     setZodics(Zodics);
     setAstrologers(Astrologer);
-  }, [response, ZodicRes, AstroRes]);
+    setProducts(Product)
+  }, [response, ZodicRes, AstroRes, ProductRes]);
 
-
-  const CategoryArray = [
-    {
-      id: 1,
-      title: 'Daily Horoscope',
-      image: require('../../Icons/Images/Horoscope.png'),
-    },
-    {
-      id: 2,
-      title: 'Free Kundli',
-      image: require('../../Icons/Images/Kundli.png'),
-    },
-    {
-      id: 3,
-      title: 'Kundli Matching',
-      image: require('../../Icons/Images/Matchkundi.png'),
-    },
-    {
-      id: 4,
-      title: 'Free Chat',
-      image: require('../../Icons/Images/Freechat.png'),
-    },
-  ];
   const liveAstroArray = [
     {
       id: 1,
@@ -90,35 +70,6 @@ const Home = ({navigation}) => {
     },
   ];
 
-  const AstromollArray = [
-    {id: 1, image: require('../../Icons/Images/pooja1.png')},
-    {id: 2, image: require('../../Icons/Images/pooja2.png')},
-    {id: 3, image: require('../../Icons/Images/pooja3.png')},
-    {id: 4, image: require('../../Icons/Images/pooja2.png')},
-  ];
-
-  const ZodiaArray = [
-    {
-      id: 1,
-      title: 'Aries',
-      image: require('../../Icons/Images/Ariea.png'),
-    },
-    {
-      id: 2,
-      title: 'Taurus',
-      image: require('../../Icons/Images/Kundli.png'),
-    },
-    {
-      id: 3,
-      title: 'Gemini',
-      image: require('../../Icons/Images/Gemini.png'),
-    },
-    {
-      id: 4,
-      title: 'Cancer',
-      image: require('../../Icons/Images/Cancer.png'),
-    },
-  ];
 
   return (
     <View style={styles.container}>
@@ -474,7 +425,7 @@ const Home = ({navigation}) => {
         </View>
 
         <FlatList
-          data={AstromollArray}
+          data={products}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           renderItem={({item, index}) => {
@@ -483,7 +434,9 @@ const Home = ({navigation}) => {
                 activeOpacity={0.6}
                 onPress={() => navigation.navigate('Pooja')}
                 style={[styles.liveView]}>
-                <Image source={item.image} style={styles.AstromollImage} />
+                <Image source={{
+                  uri: IMAGE_URL + item.prodpicture
+                }} style={styles.AstromollImage} />
               </TouchableOpacity>
             );
           }}

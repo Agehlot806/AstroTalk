@@ -23,9 +23,6 @@ import {
   export default function TabBar({
     props: {state, descriptors, navigation},
   }) {
-    console.log('state' ,state);
-    console.log('descriptors' ,descriptors);
-    console.log('navigation' ,navigation);
     const focusedOptions = descriptors[state.routes[state.index].key].options;
   
     if (focusedOptions.tabBarVisible === false) {
