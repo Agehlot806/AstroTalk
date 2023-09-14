@@ -1,13 +1,15 @@
 export default {
-  LOGIN: 'user-login/',
-  LANGUAGEADD: 'language-add/',
-  LANGUAGEPOST: 'language/',
-  ADDUSER: 'user-detail/',
+  LOGIN: 'base/user-login/',
+  LANGUAGEADD: 'base/language-add/',
+  LANGUAGEPOST: 'base/language/',
+  ADDUSER: 'base/user-detail/',
   // HomeScreen
-  HOROSCOPCATEGORY: 'base-category/',
-  ZODICS: 'horoscope-category/',
-  ASTROLOGERS: 'astrologer/',
+  HOROSCOPCATEGORY: 'base/base-category/',
+  ZODICS: 'base/horoscope-category/',
+  ASTROLOGERS: 'base/astrologer/',
+  PRODUCTS: 'base/product/',
   // Pooja
-  POOJA_CATEGORY: 'puja-category/',
-  POOJAS: 'puja/'
+  POOJA_CATEGORY: 'base/puja-category/',
+  POOJAS: 'base/puja/',
+  POOJA_FILTER: 'api/pooja-filter/'
 };

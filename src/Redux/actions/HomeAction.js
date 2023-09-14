@@ -1,6 +1,6 @@
 import apiEndPoints from '../../Utils/apiEndPoints';
 import { apiCall } from '../../Utils/httpClient';
-import {GET_ASTROLOGERS, HOROSCOPE_CAT, ZODICS_GET} from '../Types';
+import {GET_ASTROLOGERS, GET_PRODUCT, HOROSCOPE_CAT, ZODICS_GET} from '../Types';
 
 export const getHoroscopeCategory = () => async dispatch => {
   try {
@@ -43,5 +43,19 @@ export const getAstrologers = () => async dispatch => {
     }
   } catch (error) {
     console.log('error in getZodics', error);
+  }
+};
+export const getProducts = () => async dispatch => {
+  try {
+    const res = await apiCall('get', apiEndPoints.PRODUCTS);
+    console.log('getProducts', res);
+    if (res.status === 200) {
+      dispatch({
+        type: GET_PRODUCT,
+        payload: res.data,
+      });
+    }
+  } catch (error) {
+    console.log('error in getProducts', error);
   }
 };

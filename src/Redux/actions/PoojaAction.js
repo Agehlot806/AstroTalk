@@ -1,6 +1,6 @@
 import apiEndPoints from '../../Utils/apiEndPoints';
 import {apiCall} from '../../Utils/httpClient';
-import {GET_POOJAS, GET_POOJA_CATEGORY} from '../Types';
+import {GET_POOJAS, GET_POOJAS_FILTER, GET_POOJA_CATEGORY} from '../Types';
 
 export const getPoojaCategory = () => async dispatch => {
   try {
@@ -28,5 +28,19 @@ export const getPoojas = () => async dispatch => {
     }
   } catch (error) {
     console.log('error in getPoojas', error);
+  }
+};
+export const getByPoojaCategory = (id) => async dispatch => {
+  try {
+    const res = await apiCall('get', `${apiEndPoints.POOJA_FILTER}${id}`);
+    console.log('getByPoojaCategory', res);
+    if (res.status === 200) {
+      dispatch({
+        type: GET_POOJAS_FILTER,
+        payload: res.data,
+      });
+    }
+  } catch (error) {
+    console.log('error in getByPoojaCategory', error);
   }
 };
