@@ -17,33 +17,21 @@ import {
 } from 'react-native-responsive-screen';
 import {COLOR, FONT, FONT_SIZE} from '../../Providerscreen/Globles';
 import Menuicon from '../../Icons/Svg/Menuicon.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import { getZodics } from '../../Redux/actions/HomeAction';
+import { IMAGE_URL, OTHER_URL } from '../../Utils/constant';
+import axios from 'axios';
+import moment from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DailyHoroscope = ({navigation}) => {
+  const dispatch = useDispatch()
   const [selectHoro, setSelectHoro] = useState('');
   const [selectDay, setSelectDay] = useState('');
   const [selectIndex, setSelectIndex] = useState(-1);
-  const ZodiaArray = [
-    {
-      id: 1,
-      title: 'Aries',
-      image: require('../../Icons/Images/Ariea.png'),
-    },
-    {
-      id: 2,
-      title: 'Taurus',
-      image: require('../../Icons/Images/Kundli.png'),
-    },
-    {
-      id: 3,
-      title: 'Gemini',
-      image: require('../../Icons/Images/Gemini.png'),
-    },
-    {
-      id: 4,
-      title: 'Cancer',
-      image: require('../../Icons/Images/Cancer.png'),
-    },
-  ];
+  const [zodics, setZodics] = useState([]);
+  const [dailyPredication, setDailyPredication] = useState([])
+  const { ZodicRes} = useSelector(state => state.homeState);
   const Days = [
     {id: 1, title: 'Yesterday'},
     {id: 2, title: 'Today'},
@@ -89,9 +77,41 @@ const DailyHoroscope = ({navigation}) => {
     },
   ];
 
+  useEffect(() => {
+    dispatch(getZodics());
+  }, [dispatch])
+  useEffect(() => {
+    const Zodics = Array.isArray(ZodicRes) ? ZodicRes : [];
+
+    setZodics(Zodics);
+
+  }, [ZodicRes])
+  
+  const getHoroscope = async (title) => {
+    const accessToken = await AsyncStorage.getItem('token')
+    console.log('accessToken',accessToken);
+    const newDate = new Date()
+    const date = moment(newDate).format('YYYY-MM-DDTHH:mm:ss[Z]');
+    const zodic = title.toLowerCase()
+    console.log('date zodic', date, zodic);
+    axios.get(`${OTHER_URL}/horoscope/daily?datetime=${date}&sign=${zodic}`,{
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      }
+    })
+    .then(res => {
+      console.log('res in horo', res)
+      setDailyPredication(res.data.data.daily_prediction)
+    })
+    .catch(error => {
+      console.log('error in horo', error)
+    })
+  }
+  
   const Horoscop = title => {
     console.log('titd', title);
     setSelectHoro(title);
+    getHoroscope(title)
   };
   const Dayfunction = title => {
     console.log('titd', title);
@@ -144,30 +164,35 @@ const DailyHoroscope = ({navigation}) => {
       <ScrollView style={{flexGrow: 1}} showsVerticalScrollIndicator={false}>
         {/* ------ Horocsop ====== */}
         <FlatList
-          data={ZodiaArray}
+          data={zodics}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           renderItem={({item, index}) => {
             return (
               <TouchableOpacity
                 activeOpacity={1}
-                onPress={() => Horoscop(item.title)}>
+                onPress={() => Horoscop(item.catname)}>
                 <View
                   style={[
                     styles.HoroView,
                     {
                       backgroundColor:
-                        selectHoro === item.title ? COLOR.YELLOW : COLOR.WHITE,
+                        selectHoro === item.catname ? COLOR.YELLOW : COLOR.WHITE,
                     },
                   ]}>
-                  <Image source={item.image} style={styles.cateImage} />
+                  <Image
+                    source={{
+                      uri: IMAGE_URL + item.horoscopeimg,
+                    }}
+                    style={styles.cateImage}
+                  />
                 </View>
                 <Text
                   style={[
                     styles.subheadlineText,
                     {width: wp('20%'), marginVertical: wp('2%')},
                   ]}>
-                  {item.title}
+                  {item.catname}
                 </Text>
               </TouchableOpacity>
             );
@@ -216,6 +241,32 @@ const DailyHoroscope = ({navigation}) => {
             }}
           />
 
+          {selectHoro !== '' &&
+          (<TouchableOpacity
+            style={[
+              styles.detailView,
+            ]}
+            activeOpacity={1}>
+            <View style={{width: wp('55%')}}>
+              <Text style={[styles.blueText]}>{dailyPredication.sign_name}</Text>
+              <Text style={[styles.grayText, {marginTop: hp('1%')}]}>
+                {dailyPredication.prediction}
+              </Text>
+            </View>
+            <View
+              style={[
+                styles.roundStyle,
+              ]}>
+              <Text
+                style={{
+                  fontFamily: FONT.SEMI_BOLD,
+                  fontSize: FONT_SIZE.F_14,
+                  color: COLOR.GRAY,
+                }}>
+                1/1
+              </Text>
+            </View>
+          </TouchableOpacity>)}
           {/* ------Detail ----------- */}
           <FlatList
             data={Detaillist}
