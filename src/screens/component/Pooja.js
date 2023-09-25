@@ -125,7 +125,7 @@ const Pooja = ({navigation}) => {
           showsVerticalScrollIndicator={false}
           renderItem={({item, index}) => {
             return (
-              <TouchableOpacity onPress={() => navigation.navigate('Pooja')}>
+              <TouchableOpacity onPress={() => navigation.navigate('AstroDetail',{type: 'pooja', detailsaData: item})}>
                 <View style={styles.cardView}>
                   <ImageBackground
                     imageStyle={{borderRadius: hp('2%')}}
@@ -134,9 +134,11 @@ const Pooja = ({navigation}) => {
                     }}
                     style={styles.astroImage}>
                     <Image
-                      source={item.User}
+                       source={{
+                        uri: IMAGE_URL + item?.astrologer?.panditpicture,
+                      }}
                       style={{
-                        height: hp('4%'),
+                        height: wp('6.5%'),
                         width: wp('6.5%'),
                         resizeMode: 'contain',
                         borderRadius: hp('2%'),
@@ -333,12 +335,11 @@ const styles = StyleSheet.create({
     marginRight: hp('2%'),
     marginTop: hp('2%'),
   },
-
   astroImage: {
     height: hp('24%'),
     width: wp('88%'),
     borderRadius: wp('4%'),
-    // resizeMode: 'contain',
+    resizeMode: 'contain',
   },
   cardView: {
     // flexDirection: 'row',

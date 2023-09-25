@@ -13,7 +13,7 @@ import {
 } from 'react-native-responsive-screen';
 import {COLOR, FONT, FONT_SIZE} from '../../Providerscreen/Globles';
 import PhoneNumberInput from 'react-native-phone-number-input';
-import IocalImage from '../../Providerscreen/IocalImage';
+import LocalImage from '../../Providerscreen/LocalImage';
 import CommonButton from '../../Providerscreen/CommonButton';
 import axios from 'axios';
 import {useDispatch, useSelector} from 'react-redux';
@@ -63,7 +63,7 @@ const Login = ({navigation}) => {
     <View style={styles.mainContainer}>
       <StatusBar backgroundColor={'transparent'} translucent />
       <ImageBackground
-        source={IocalImage.Login_BgImage}
+        source={LocalImage.Login_BgImage}
         style={styles.ImageContainer}>
         {/* Log in and sign up */}
         <View style={{alignSelf: 'center', marginVertical: hp('10%')}}>

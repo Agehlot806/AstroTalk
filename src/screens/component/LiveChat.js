@@ -16,7 +16,7 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import {COLOR, FONT, FONT_SIZE} from '../../Providerscreen/Globles';
-import IocalImage from '../../Providerscreen/IocalImage';
+import LocalImage from '../../Providerscreen/LocalImage';
 import ProfileUser from '../../Icons/Svg/ProfileUser.svg';
 import WhiteEye from '../../Icons/Svg/WhiteEye.svg';
 import Gift from '../../Icons/Svg/Gift.svg';
@@ -54,11 +54,11 @@ const LiveChat = ({navigation}) => {
     <View style={styles.container}>
       <ImageBackground
         style={styles.backImageView}
-        source={IocalImage.Livechat}>
+        source={LocalImage.Livechat}>
         <View style={{flexDirection: 'row'}}>
           <View style={styles.midHeadView}>
             <Image
-              source={IocalImage.UserOne}
+              source={LocalImage.UserOne}
               style={{
                 height: hp('4.5%'),
                 width: wp('7.5%'),
@@ -90,7 +90,7 @@ const LiveChat = ({navigation}) => {
             </View>
             <View style={[styles.TextandImageView, {marginTop: hp('0%')}]}>
               <Image
-                source={IocalImage.TwoUser}
+                source={LocalImage.TwoUser}
                 style={{
                   height: hp('4.5%'),
                   width: wp('7.5%'),
@@ -137,7 +137,7 @@ const LiveChat = ({navigation}) => {
             }}>
             <TouchableOpacity onPress={() => navigation.goBack('')}>
               <Image
-                source={IocalImage.WhitCross}
+                source={LocalImage.WhitCross}
                 style={{
                   height: hp('4%'),
                   width: wp('4%'),
@@ -242,7 +242,7 @@ const LiveChat = ({navigation}) => {
               style={{width: wp('45%'), color: COLOR.WHITE}}
             />
             <Image
-              source={IocalImage.SendMssg}
+              source={LocalImage.SendMssg}
               style={{height: hp('5%'), width: wp('8%'), resizeMode: 'contain'}}
             />
           </View>

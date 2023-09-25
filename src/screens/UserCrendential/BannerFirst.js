@@ -14,17 +14,17 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import {COLOR, FONT, FONT_SIZE} from '../../Providerscreen/Globles';
-import IocalImage from '../../Providerscreen/IocalImage';
+import LocalImage from '../../Providerscreen/LocalImage';
 import CommonButton from '../../Providerscreen/CommonButton';
 import {Screen} from '../../constant/screen';
 import Swiper from 'react-native-swiper';
 
 const BannerFirst = ({navigation}) => {
   const images = [
-    {imag: IocalImage.Banner_1},
-    {imag: IocalImage.Banner_2},
-    {imag: IocalImage.Banner_3},
-    {imag: IocalImage.Banner_4},
+    {imag: LocalImage.Banner_1},
+    {imag: LocalImage.Banner_2},
+    {imag: LocalImage.Banner_3},
+    {imag: LocalImage.Banner_4},
   ];
 
   return (
@@ -43,7 +43,12 @@ const BannerFirst = ({navigation}) => {
               resizeMode="cover"
               style={styles.image}>
               <TouchableOpacity
-                onPress={() => navigation.navigate('Login')}
+                onPress={() =>
+                  navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Login' }],
+                  })
+                }
                 style={{
                   alignSelf: 'flex-end',
                   margin: hp('4%'),
@@ -73,7 +78,12 @@ const BannerFirst = ({navigation}) => {
                 <View style={styles.TextView}>
                   <CommonButton
                     ButtonText={'Next'}
-                    HandleNext={() => navigation.navigate('Login')}
+                    HandleNext={() =>
+                      navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Login' }],
+                      })
+                    }
                   />
                 </View>
               </View>

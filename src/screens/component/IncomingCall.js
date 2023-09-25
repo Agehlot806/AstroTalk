@@ -16,7 +16,7 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import {COLOR, FONT, FONT_SIZE} from '../../Providerscreen/Globles';
-import IocalImage from '../../Providerscreen/IocalImage';
+import LocalImage from '../../Providerscreen/LocalImage';
 import Speaker from '../../Icons/Svg/Speaker.svg';
 import MuteVoice from '../../Icons/Svg/MuteVoice.svg';
 import RedCall from '../../Icons/Svg/RedCall.svg';
@@ -26,7 +26,7 @@ const IncomingCall = () => {
     <View style={styles.container}>
       <StatusBar backgroundColor={'#091E84'} barStyle="light-content" />
       <Text style={styles.headText}>Incoming Call</Text>
-      <Image source={IocalImage.UserTwo} style={styles.imageStyle} />
+      <Image source={LocalImage.UserTwo} style={styles.imageStyle} />
       <Text style={styles.headText}>01:20</Text>
       <View
         style={{

@@ -29,42 +29,104 @@ import BasicDetails from '../screens/component/BasicDetails';
 import SimilarAstrologer from '../screens/component/SimilarAstrologer';
 import CreateNewKundali from '../screens/component/CreateNewKundali';
 import CustomTab from './CustomTab';
+import Payment from '../screens/component/Payment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import CustomDrawer from './CustomDrawer';
+import {useSelector} from 'react-redux';
+import { navigationRef } from '../Utils/constant';
 
 const Stack = createNativeStackNavigator();
+const AuthStack = createNativeStackNavigator();
+const AppStack = createNativeStackNavigator();
+const AuthLoading = createNativeStackNavigator();
+const DrawerStack = createDrawerNavigator();
+const screenOptions = {headerShown: false, gestureEnabled: true};
+const AuthStackComponet = () => {
+  return (
+    <AuthStack.Navigator screenOptions={screenOptions}>
+      <AuthStack.Screen name={Screen.BANNERFIRST} component={BannerFirst} />
+      <AuthStack.Screen name="Login" component={Login} />
+      <AuthStack.Screen name="OTPVerification" component={OTPVerification} />
+      <AuthStack.Screen name={Screen.LANGUAGE} component={Language} />
+      <AuthStack.Screen name={Screen.PROFILE} component={Profile} />
+    </AuthStack.Navigator>
+  );
+};
+const DrawerStackComponet = () => {
+  return (
+    <DrawerStack.Navigator
+      screenOptions={screenOptions}
+      drawerContent={props => CustomDrawer(props)}>
+      <DrawerStack.Screen name="Drawer" component={CustomTab} />
+    </DrawerStack.Navigator>
+  );
+};
+
+const AppStackComponet = () => {
+  return (
+    <AppStack.Navigator screenOptions={screenOptions}>
+      <AppStack.Screen name={'drawer'} component={DrawerStackComponet} />
+      {/* <AppStack.Screen name={'customTabs'} component={CustomTab} /> */}
+      <AppStack.Screen name="Notification" component={Notification} />
+      <AppStack.Screen name="BasicDetails" component={BasicDetails} />
+      <AppStack.Screen name="PlaceBirth" component={PlaceBirth} />
+      <AppStack.Screen name="CallandChat" component={CallandChat} />
+      <AppStack.Screen name="Pooja" component={Pooja} />
+      <AppStack.Screen name="DailyHoroscope" component={DailyHoroscope} />
+      <AppStack.Screen name="AstroDetail" component={AstroDetail} />
+      <AppStack.Screen name="KundliSearch" component={KundliSearch} />
+      <AppStack.Screen name="KundliForm" component={KundliForm} />
+      <AppStack.Screen name="KundliMatching" component={KundliMatching} />
+      <AppStack.Screen name="LiveChat" component={LiveChat} />
+      <AppStack.Screen name="IncomingCall" component={IncomingCall} />
+      <AppStack.Screen name="ProfileScreen" component={ProfileScreen} />
+      <AppStack.Screen name="SimilarAstrologer" component={SimilarAstrologer} />
+      <AppStack.Screen name="CreateNewKundali" component={CreateNewKundali} />
+      <AppStack.Screen name="payment" component={Payment} />
+      <AppStack.Screen
+        name="KundliNewandDelete"
+        component={KundliNewandDelete}
+      />
+    </AppStack.Navigator>
+  );
+};
+// const getUserId = async () => {
+//   try {
+//     const userId = await AsyncStorage.getItem('userId');
+//     return userId;
+//   } catch (error) {
+//     // Handle error
+//     console.error('Error reading userId from AsyncStorage:', error);
+//     return null;
+//   }
+// };
+
+const AuthLoadingComponent = () => {
+  // const userId = await getUserId();
+  // console.log('userId', userId);
+  const {response,userData, authToken = false} = useSelector(state => state.authReducer);
+  console.log('response', response);
+  console.log('userData', userData);
+  console.log('authToken', authToken);
+
+  return (
+    <AuthLoading.Navigator screenOptions={screenOptions}>
+      {authToken ? (
+        <AuthLoading.Screen name="App" component={AppStackComponet} />
+      ) : (
+        <AuthLoading.Screen name="Auth" component={AuthStackComponet} />
+      )}
+    </AuthLoading.Navigator>
+  );
+};
 
 const Routes = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{headerShown: false}}
-        initialRouteName="Splash">
-        {/* <Stack.Screen name={Screen.SPLASH} component={Splash} />
-        <Stack.Screen name={Screen.BANNERFIRST} component={BannerFirst} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="OTPVerification" component={OTPVerification} />
-        <Stack.Screen name={Screen.LANGUAGE} component={Language} />
-        <Stack.Screen name={Screen.PROFILE} component={Profile} /> */}
-        {/* <Stack.Screen name={Screen.HOME} component={Home} /> */}
-        <Stack.Screen name={Screen.HOME} component={CustomTab} />
-        <Stack.Screen name="Notification" component={Notification} />
-        <Stack.Screen name="BasicDetails" component={BasicDetails} />
-        <Stack.Screen name="PlaceBirth" component={PlaceBirth} />
-        <Stack.Screen name="CallandChat" component={CallandChat} />
-        <Stack.Screen name="Pooja" component={Pooja} />
-        <Stack.Screen name="DailyHoroscope" component={DailyHoroscope} />
-        <Stack.Screen name="AstroDetail" component={AstroDetail} />
-        <Stack.Screen name="KundliSearch" component={KundliSearch} />
-        <Stack.Screen name="KundliForm" component={KundliForm} />
-        <Stack.Screen name="KundliMatching" component={KundliMatching} />
-        <Stack.Screen name="LiveChat" component={LiveChat} />
-        <Stack.Screen name="IncomingCall" component={IncomingCall} />
-        <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-        <Stack.Screen name="SimilarAstrologer" component={SimilarAstrologer} />
-        <Stack.Screen name="CreateNewKundali" component={CreateNewKundali} />
-        <Stack.Screen
-          name="KundliNewandDelete"
-          component={KundliNewandDelete}
-        />
+    <NavigationContainer ref={navigationRef}>
+      <Stack.Navigator screenOptions={screenOptions} initialRouteName="Splash">
+        <Stack.Screen name={Screen.SPLASH} component={Splash} />
+        <Stack.Screen name={'AuthLoading'} component={AuthLoadingComponent} />
       </Stack.Navigator>
     </NavigationContainer>
   );

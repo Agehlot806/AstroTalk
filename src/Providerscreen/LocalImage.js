@@ -1,4 +1,4 @@
-export default IocalImage = {
+export default LocalImage = {
   AstroSplash: require('../Icons/Images/AstroSplash.png'),
   Banner1: require('../Icons/Images/Banner1.png'),
   Heart: require('../Icons/Images/Heart.png'),
@@ -48,4 +48,8 @@ export default IocalImage = {
   Deactivecall: require('../Icons/Images/Deactivecall.png'),
   Activepot: require('../Icons/Images/Activepot.png'),
   DeactivePlot: require('../Icons/Images/DeactivePlot.png'),
+  // Payment Options
+  upiImage: require('../Icons/Images/upi.png'),
+  PaytmImage: require('../Icons/Images/paytm.png'),
+  phonepeImage: require('../Icons/Images/phonepe.png'),
 };

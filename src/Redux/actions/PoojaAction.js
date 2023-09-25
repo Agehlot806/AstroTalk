@@ -1,6 +1,12 @@
 import apiEndPoints from '../../Utils/apiEndPoints';
 import {apiCall} from '../../Utils/httpClient';
-import {GET_POOJAS, GET_POOJAS_FILTER, GET_POOJA_CATEGORY} from '../Types';
+import {
+  BOOK_POOJA,
+  GET_POOJAS,
+  GET_POOJAS_FILTER,
+  GET_POOJA_CATEGORY,
+  GET_POOJA_SLOTS,
+} from '../Types';
 
 export const getPoojaCategory = () => async dispatch => {
   try {
@@ -30,7 +36,7 @@ export const getPoojas = () => async dispatch => {
     console.log('error in getPoojas', error);
   }
 };
-export const getByPoojaCategory = (id) => async dispatch => {
+export const getByPoojaCategory = id => async dispatch => {
   try {
     const res = await apiCall('get', `${apiEndPoints.POOJA_FILTER}${id}`);
     console.log('getByPoojaCategory', res);
@@ -42,5 +48,47 @@ export const getByPoojaCategory = (id) => async dispatch => {
     }
   } catch (error) {
     console.log('error in getByPoojaCategory', error);
+  }
+};
+export const getByPoojaSlots = () => async dispatch => {
+  try {
+    const res = await apiCall('get', apiEndPoints.POOJA_SLOTS);
+    console.log('getByPoojaSlots', res);
+    if (res.status === 200) {
+      dispatch({
+        type: GET_POOJA_SLOTS,
+        payload: res.data,
+      });
+    }
+  } catch (error) {
+    console.log('error in getByPoojaSlots', error);
+  }
+};
+export const bookPoojaSlot = params => async dispatch => {
+  try {
+    const res = await apiCall('post', apiEndPoints.BOOKPOOJA, params);
+    console.log('bookPoojaSlot', res);
+    if (res.status === 200) {
+      dispatch({
+        type: BOOK_POOJA,
+        payload: res.data,
+      });
+    }
+  } catch (error) {
+    console.log('error in bookPoojaSlot', error);
+  }
+};
+export const poojaPayment = params => async dispatch => {
+  try {
+    const res = await apiCall('post', apiEndPoints.POOJAPAYMENT, params);
+    console.log('poojaPayment', res);
+    if (res.status === 200) {
+      dispatch({
+        type: BOOK_POOJA,
+        payload: res.data,
+      });
+    }
+  } catch (error) {
+    console.log('error in poojaPayment', error);
   }
 };

@@ -42,7 +42,11 @@ const Language = ({navigation}) => {
     if (CreateRes?.status === 201) {
       dispatch(removeAuthState());
       setSelectedLanguage(null); // Reset the selected language
-      navigation.navigate('Home');
+      
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Login'}],
+      });
     }
   }, [response, CreateRes]);
 
@@ -68,10 +72,9 @@ const Language = ({navigation}) => {
 
   const handleSubmit = async () => {
     const userId =await AsyncStorage.getItem('userId');
-
     if (selectedLanguage) {
       const params = {
-        user: JSON.parse(userId),
+        user: Number(userId),
         language: selectedLanguage.name,
       };
       dispatch(addLanguage(params));

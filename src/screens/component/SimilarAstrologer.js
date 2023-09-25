@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, ScrollView, Image } from 'react-native'
-import IocalImage from '../../Providerscreen/IocalImage';
+import LocalImage from '../../Providerscreen/LocalImage';
 // import Astrology from '../Icons/Svg/astrology.svg'
 // import Language from '../Icons/Svg/language.svg'
 import { COLOR, FONT_SIZE } from '../../Providerscreen/Globles'
@@ -17,7 +17,7 @@ const SimilarAstrologer = ({navigation}) => {
   </View>
   {/* <View style={{flexDirection:'row',backgroundColor:COLOR.WHITE,width:wp('90%')}}>
   
-    <Image source={IocalImage.Rectangle} style={{width:wp('20%'),height:hp('10%'),resizeMode:'contain'}} />
+    <Image source={LocalImage.Rectangle} style={{width:wp('20%'),height:hp('10%'),resizeMode:'contain'}} />
  <View>
      
   <Text style={{color:COLOR.GRAY,fontSize:FONT_SIZE.F_20,marginHorizontal:hp('2%')}}>Cody Fisher</Text>
@@ -50,18 +50,18 @@ const SimilarAstrologer = ({navigation}) => {
   </View>
   <View style={{alignSelf:'center',marginVertical:hp('3%')}}>
   <View style={{flexDirection:'row',}}>
-    <Image source={IocalImage.Rectangle_2}/>
-    <Image source={IocalImage.Rectangle_1}  style={{}}/>
-    <Image source={IocalImage.Rectangle_2}/>
+    <Image source={LocalImage.Rectangle_2}/>
+    <Image source={LocalImage.Rectangle_1}  style={{}}/>
+    <Image source={LocalImage.Rectangle_2}/>
     </View>
     <View  style={{flexDirection:'row'}}> 
-    <Image source={IocalImage.Rectangle_2}/>
-    <Image source={IocalImage.Rectangle_1}style={{marginTop:hp('2%')}} />
-    <Image source={IocalImage.Rectangle_2}/>
+    <Image source={LocalImage.Rectangle_2}/>
+    <Image source={LocalImage.Rectangle_1}style={{marginTop:hp('2%')}} />
+    <Image source={LocalImage.Rectangle_2}/>
    </View>
     <View  style={{flexDirection:'row'}}> 
-  <Image source={IocalImage.Rectangle_2}/>
-    <Image source={IocalImage.Rectangle_2}  style={{marginLeft:hp('19%')}}/>
+  <Image source={LocalImage.Rectangle_2}/>
+    <Image source={LocalImage.Rectangle_2}  style={{marginLeft:hp('19%')}}/>
   </View>
   </View>
 </ScrollView>

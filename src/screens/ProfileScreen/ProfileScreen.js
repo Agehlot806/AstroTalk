@@ -16,7 +16,7 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import {COLOR, FONT, FONT_SIZE} from '../../Providerscreen/Globles';
-import IocalImage from '../../Providerscreen/IocalImage';
+import LocalImage from '../../Providerscreen/LocalImage';
 import Wallet from '../../Icons/Svg/Wallet.svg';
 import Store from '../../Icons/Svg/Store.svg';
 import Level from '../../Icons/Svg/Level.svg';
@@ -33,14 +33,14 @@ const ProfileScreen = () => {
       <ScrollView style={{flexGrow: 1}} showsVerticalScrollIndicator={false}>
         <ImageBackground
           style={styles.backImageView}
-          source={IocalImage.LightOrange}>
+          source={LocalImage.LightOrange}>
           <View style={{marginTop: hp('3%')}}>
             <Text style={styles.TextTitle}>Profile</Text>
           </View>
           <View style={styles.profileView}>
-            <Image source={IocalImage.UserOne} style={styles.imageProfile} />
+            <Image source={LocalImage.UserOne} style={styles.imageProfile} />
             <View style={{position: 'absolute', bottom: 0, right: wp('3%')}}>
-              <Image source={IocalImage.UserOne} style={styles.smallImage} />
+              <Image source={LocalImage.UserOne} style={styles.smallImage} />
             </View>
           </View>
           <View style={{marginTop: hp('3%')}}>

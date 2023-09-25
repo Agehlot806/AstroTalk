@@ -149,7 +149,7 @@ const CallandChat = ({navigation}) => {
             return (
               <TouchableOpacity
                 activeOpacity={0.6}
-                onPress={() => navigation.navigate('AstroDetail')}>
+                onPress={() => navigation.navigate('AstroDetail',{type: 'astro', detailsaData: item})}>
                 <View style={styles.cardView}>
                   <Image source={{
                     uri: IMAGE_URL + item.panditpicture

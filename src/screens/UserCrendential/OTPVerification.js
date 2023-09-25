@@ -14,13 +14,15 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import IocalImage from '../../Providerscreen/IocalImage';
+import LocalImage from '../../Providerscreen/LocalImage';
 import CommonButton from '../../Providerscreen/CommonButton';
 import {Screen} from '../../constant/screen';
 import EditNumber from '../../Icons/Svg/EditIcon.svg';
 import {useDispatch, useSelector} from 'react-redux';
+import {OtpVerify} from '../../Redux/actions/AuthAction';
 
 const OTPVerification = ({navigation, route}) => {
+  const dispatch = useDispatch();
   const {response} = useSelector(state => state.authReducer);
   const [otp, setOTP] = useState(['', '', '', '']);
   console.log(otp);
@@ -57,7 +59,11 @@ const OTPVerification = ({navigation, route}) => {
     const enteredOTP = otp.join('');
 
     if (response?.data?.phoneno === 'Existing') {
-      navigation.navigate('Home');
+      dispatch(OtpVerify());
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'AuthLoading'}],
+      });
     } else {
       navigation.navigate('Profile');
     }
@@ -67,7 +73,7 @@ const OTPVerification = ({navigation, route}) => {
     <View style={styles.container}>
       <StatusBar backgroundColor={'transparent'} translucent />
       <ImageBackground
-        source={IocalImage.Login_BgImage}
+        source={LocalImage.Login_BgImage}
         style={styles.RectangleImage}>
         <View style={{marginVertical: hp('20%'), alignSelf: 'center'}}>
           <Text style={[styles.otpText, {fontSize: FONT_SIZE.F_21}]}>

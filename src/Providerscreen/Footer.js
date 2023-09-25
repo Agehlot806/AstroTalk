@@ -5,7 +5,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import IocalImage from './IocalImage';
+import LocalImage from './LocalImage';
 import {useNavigation} from '@react-navigation/native';
 
 const Footer = ({activePageName}) => {
@@ -23,9 +23,9 @@ const Footer = ({activePageName}) => {
           onPress={() => navigation.navigate('Home')}
           style={styles.BtnStyle}>
           {activePageName === 0 ? (
-            <Image source={IocalImage.ActiveHome} style={styles.Images} />
+            <Image source={LocalImage.ActiveHome} style={styles.Images} />
           ) : (
-            <Image source={IocalImage.DiativateHome} style={styles.Images} />
+            <Image source={LocalImage.DiativateHome} style={styles.Images} />
           )}
         </TouchableOpacity>
 
@@ -34,9 +34,9 @@ const Footer = ({activePageName}) => {
           onPress={() => navigation.navigate('Notification')}
           style={styles.BtnStyle}>
           {activePageName === 1 ? (
-            <Image source={IocalImage.Activemessages} style={styles.Images} />
+            <Image source={LocalImage.Activemessages} style={styles.Images} />
           ) : (
-            <Image source={IocalImage.Deactivemessage} style={styles.Images} />
+            <Image source={LocalImage.Deactivemessage} style={styles.Images} />
           )}
         </TouchableOpacity>
       </View>
@@ -46,7 +46,7 @@ const Footer = ({activePageName}) => {
           activeOpacity={0.9}
           // onPress={() => navigation.navigate('CallandChat')}
           style={styles.VideoBtnStyle}>
-          <Image source={IocalImage.Play} style={styles.VideoImages} />
+          <Image source={LocalImage.Play} style={styles.VideoImages} />
         </TouchableOpacity>
       </View>
 
@@ -61,9 +61,9 @@ const Footer = ({activePageName}) => {
           onPress={() => navigation.navigate('CallandChat')}
           style={styles.BtnStyle}>
           {activePageName === 2 ? (
-            <Image source={IocalImage.Activecall} style={styles.Images} />
+            <Image source={LocalImage.Activecall} style={styles.Images} />
           ) : (
-            <Image source={IocalImage.Deactivecall} style={styles.Images} />
+            <Image source={LocalImage.Deactivecall} style={styles.Images} />
           )}
         </TouchableOpacity>
         <TouchableOpacity
@@ -71,9 +71,9 @@ const Footer = ({activePageName}) => {
           onPress={() => navigation.navigate('Pooja')}
           style={styles.BtnStyle}>
           {activePageName === 3 ? (
-            <Image source={IocalImage.Activepot} style={styles.Images} />
+            <Image source={LocalImage.Activepot} style={styles.Images} />
           ) : (
-            <Image source={IocalImage.DeactivePlot} style={styles.Images} />
+            <Image source={LocalImage.DeactivePlot} style={styles.Images} />
           )}
         </TouchableOpacity>
       </View>

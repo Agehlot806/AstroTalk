@@ -1,8 +1,18 @@
-import {LANGUAGE_ADD, LANGUAGE_GET, PROFILE_ADD, REMOVE_AUTH, USER_LOGIN} from '../Types';
+import {
+  LANGUAGE_ADD,
+  LANGUAGE_GET,
+  OTP_VERIFY,
+  PROFILE_ADD,
+  REMOVE_AUTH,
+  USER_LOGIN,
+  USER_LOGOUT,
+} from '../Types';
 
 const initialState = {
   response: null,
-  CreateRes: null
+  CreateRes: null,
+  userData: null,
+  authToken: false,
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -11,6 +21,12 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         response: action.payload,
+        userData: action.payload,
+      };
+    case OTP_VERIFY:
+      return {
+        ...state,
+        authToken: true,
       };
     case LANGUAGE_GET:
       return {
@@ -26,6 +42,14 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         CreateRes: action.payload,
+      };
+    case USER_LOGOUT:
+      return {
+        ...state,
+        response: action.payload,
+        CreateRes: action.payload,
+        userData: action.payload,
+        authToken: false,
       };
     case REMOVE_AUTH:
       return {

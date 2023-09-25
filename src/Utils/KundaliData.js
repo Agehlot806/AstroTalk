@@ -1,12 +1,12 @@
 import {Image} from 'react-native';
 import {COLOR} from '../Providerscreen/Globles';
-import IocalImage from '../Providerscreen/IocalImage';
+import LocalImage from '../Providerscreen/LocalImage';
 
 export const kundaliInfo = [
   {
     id: 1,
     name: 'Rahul vish',
-    image: <Image source={IocalImage.Avtar} />,
+    image: <Image source={LocalImage.Avtar} />,
     date: '30 may 1995',
     time: '05:57 PM',
     Address: 'khandwa madhya pradesh india',
@@ -14,7 +14,7 @@ export const kundaliInfo = [
   {
     id: 2,
     name: 'Rahul vish',
-    image: <Image source={IocalImage.Avtar} />,
+    image: <Image source={LocalImage.Avtar} />,
     date: '30 may 1995',
     time: '05:57 PM',
     Address: 'khandwa madhya pradesh india',
@@ -22,7 +22,7 @@ export const kundaliInfo = [
   {
     id: 3,
     name: 'Rahul vish',
-    image: <Image source={IocalImage.Avtar} />,
+    image: <Image source={LocalImage.Avtar} />,
     date: '30 may 1995',
     time: '05:57 PM',
     Address: 'khandwa madhya pradesh india',

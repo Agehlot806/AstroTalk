@@ -5,6 +5,9 @@ import {Provider} from 'react-redux';
 import store from './src/Redux/Store';
 import {apiCall} from './src/Utils/httpClient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import SplashScreen from 'react-native-splash-screen';
+import 'react-native-gesture-handler';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 const App = () => {
   const apiUrl = 'https://api.prokerala.com/token';
@@ -12,6 +15,9 @@ const App = () => {
   const CLIENT_SECRET = 'jzyr3uQYitG3ND56qhykNpH9mG3R7TkrRdFaCgGF';
   useEffect(() => {
     getApiToken();
+    setTimeout(() => {
+      SplashScreen.hide();
+    }, 250);
   }, []);
 
   const getApiToken = () => {
@@ -22,13 +28,15 @@ const App = () => {
     };
     const res = apiCall('post', apiUrl, data).then(res => {
       console.log('res token', res);
-      AsyncStorage.setItem('token', res.data.access_token)
+      AsyncStorage.setItem('token', res.data.access_token);
     });
   };
   return (
-    <Provider store={store}>
-      <Routes />
-    </Provider>
+    <GestureHandlerRootView style={{flex: 1}}>
+      <Provider store={store}>
+        <Routes />
+      </Provider>
+    </GestureHandlerRootView>
   );
 };
 

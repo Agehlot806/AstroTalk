@@ -5,7 +5,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import IocalImage from '../Providerscreen/IocalImage';
+import LocalImage from '../Providerscreen/LocalImage';
 import Notification from '../screens/component/Notification';
 import CallandChat from '../screens/component/CallandChat';
 import Pooja from '../screens/component/Pooja';
@@ -48,7 +48,7 @@ const CustomTab = () => {
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => (
-            <Image source={IocalImage.ActiveHome} style={styles.Icons} />
+            <Image source={LocalImage.ActiveHome} style={styles.Icons} />
           ),
         }}
       />
@@ -57,7 +57,7 @@ const CustomTab = () => {
         component={Notification}
         options={{
           tabBarIcon: () => (
-            <Image source={IocalImage.Activemessages} style={styles.Icons} />
+            <Image source={LocalImage.Activemessages} style={styles.Icons} />
           ),
         }}
       />
@@ -67,7 +67,7 @@ const CustomTab = () => {
         options={{
           tabBarIcon: () => (
             <Image
-              source={IocalImage.Play}
+              source={LocalImage.Play}
               style={{
                 width: wp('10%'),
                 height: hp('8%'),
@@ -83,7 +83,7 @@ const CustomTab = () => {
         component={CallandChat}
         options={{
           tabBarIcon: () => (
-            <Image source={IocalImage.Activecall} style={styles.Icons} />
+            <Image source={LocalImage.Activecall} style={styles.Icons} />
           ),
         }}
       />
@@ -92,7 +92,7 @@ const CustomTab = () => {
         component={Pooja}
         options={{
           tabBarIcon: () => (
-            <Image source={IocalImage.Activepot} style={styles.Icons} />
+            <Image source={LocalImage.Activepot} style={styles.Icons} />
           ),
         }}
       />

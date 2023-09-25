@@ -37,7 +37,7 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import {COLOR, FONT, FONT_SIZE} from '../../Providerscreen/Globles';
-import IocalImage from '../../Providerscreen/IocalImage';
+import LocalImage from '../../Providerscreen/LocalImage';
 import {Table, Row, Rows} from 'react-native-table-component';
 import CommonHeader from '../../Providerscreen/CommonHeader';
 import KundaliCard from '../../Providerscreen/KundaliCard';
@@ -200,7 +200,7 @@ const BasicDetails = () => {
                 borderRadius: 10,
                 elevation: 4,
               }}>
-              <Image source={IocalImage.Avtar} style={{marginTop: hp('1%')}} />
+              <Image source={LocalImage.Avtar} style={{marginTop: hp('1%')}} />
               <Text
                 style={{
                   color: COLOR.DARK_BLUE,
@@ -553,13 +553,13 @@ const BasicDetails = () => {
             {/* ----------kundaliNorth Image */}
             {kundliSelect === 1 && (
               <View style={{alignSelf: 'center', marginTop: hp('4%')}}>
-                <Image source={IocalImage.KundaliNorth} />
+                <Image source={LocalImage.KundaliNorth} />
               </View>
             )}
             {/* ----------kundaliSouth Image */}
             {kundliSelect === 2 && (
               <View style={{alignSelf: 'center', marginTop: hp('2%')}}>
-                <Image source={IocalImage.KundaliSouth} />
+                <Image source={LocalImage.KundaliSouth} />
               </View>
             )}
             {/* -----------Planets------------- */}
@@ -977,7 +977,7 @@ const BasicDetails = () => {
             </View>
             {/* ----------kundaliNorth Image */}
             <View style={{alignSelf: 'center', marginTop: hp('4%')}}>
-              <Image source={IocalImage.KundaliNorth} />
+              <Image source={LocalImage.KundaliNorth} />
             </View>
           </>
         ) : null}
@@ -1171,7 +1171,7 @@ const BasicDetails = () => {
                 </Text>
                 {/* ----------kundaliNorth Image */}
                 <View style={{alignSelf: 'center', marginTop: hp('1%')}}>
-                  <Image source={IocalImage.KundaliNorth} />
+                  <Image source={LocalImage.KundaliNorth} />
                 </View>
               </>
             )}
@@ -1853,7 +1853,7 @@ const BasicDetails = () => {
                         elevation: 3,
                       }}>
                       <Image
-                        source={IocalImage.Avtar}
+                        source={LocalImage.Avtar}
                         style={{marginTop: hp('1%')}}
                       />
                       <Text
@@ -1916,7 +1916,7 @@ const BasicDetails = () => {
                         marginTop: hp('2%'),
                       }}>
                       <Image
-                        source={IocalImage.Avtar}
+                        source={LocalImage.Avtar}
                         style={{marginTop: hp('0.9%')}}
                       />
                       <Text
@@ -1957,7 +1957,7 @@ const BasicDetails = () => {
                         elevation: 3,
                       }}>
                       <Image
-                        source={IocalImage.Avtar}
+                        source={LocalImage.Avtar}
                         style={{marginTop: hp('1%')}}
                       />
                       <Text

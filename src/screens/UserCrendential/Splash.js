@@ -13,22 +13,23 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import {COLOR} from '../../Providerscreen/Globles';
-import IocalImage from '../../Providerscreen/IocalImage';
+import LocalImage from '../../Providerscreen/LocalImage';
 import {Screen} from '../../constant/screen';
 
 const Splash = ({navigation}) => {
   setTimeout(() => {
-    navigation.navigate(Screen.BANNERFIRST);
-  }, 3000);
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'AuthLoading'}],
+    });
+  }, 250);
   return (
     <View style={styles.mainContainer}>
       <StatusBar backgroundColor={'transparent'} translucent />
 
-      <TouchableOpacity
-        onPress={() => navigation.navigate(Screen.BANNERFIRST)}
-        style={styles.imageContainer}>
+      <TouchableOpacity style={styles.imageContainer}>
         <Image
-          source={IocalImage.AstroSplash}
+          source={LocalImage.AstroSplash}
           style={{height: hp('46%'), width: wp('94%')}}
           resizeMode="contain"
         />

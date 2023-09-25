@@ -18,7 +18,7 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import {COLOR, FONT, FONT_SIZE} from '../../Providerscreen/Globles';
-import IocalImage from '../../Providerscreen/IocalImage';
+import LocalImage from '../../Providerscreen/LocalImage';
 import Back from '../../Icons/Svg/Back.svg';
 import Whatsapp from '../../Icons/Svg/Whatsapp.svg';
 import Star from '../../Icons/Svg/Star.svg';
@@ -28,8 +28,41 @@ import AtoZ from '../../Icons/Svg/AtoZ.svg';
 import StarMoon from '../../Icons/Svg/StarMoon.svg';
 import FiveStar from '../../Icons/Svg/FiveStar.svg';
 import ProfileUser from '../../Icons/Svg/ProfileUser.svg';
+import {IMAGE_URL} from '../../Utils/constant';
+import DropDownPicker from 'react-native-dropdown-picker';
+import {useDispatch, useSelector} from 'react-redux';
+import {getByPoojaSlots} from '../../Redux/actions/PoojaAction';
+import ErrorMessage from '../../Utils/ErrorMessage';
 
-const AstroDetail = ({navigation}) => {
+const AstroDetail = ({navigation, route}) => {
+  const {type, detailsaData = {}} = route?.params || {};
+  const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [slotsData, setSlotsData] = useState([]);
+  console.log('slotsData', slotsData);
+  console.log('open', open);
+  const {response} = useSelector(state => state.pooja);
+
+  useEffect(() => {
+    dispatch(getByPoojaSlots());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const slots = Array.isArray(response) ? response : [];
+    setSlotsData(slots);
+  }, [response]);
+
+  const handleBookNow = () => {
+    if (value !== null) {
+      navigation.navigate('payment', {type: type, detailsaData: detailsaData});
+    } else {
+      ErrorMessage({
+        msg: 'Please select the slot',
+        backgroundColor: COLOR.RED,
+      });
+    }
+  };
   const Photos = [
     {img: require('../../Icons/Images/User1.png')},
     {img: require('../../Icons/Images/User2.png')},
@@ -135,7 +168,7 @@ const AstroDetail = ({navigation}) => {
         </TouchableOpacity>
         <View style={{width: '65%'}}>
           <Text style={[styles.headerTitle, {marginLeft: hp('1%')}]}>
-            Astro Detail
+            {type === 'astro' ? 'Astro Detail' : 'Pooja Detail'}
           </Text>
         </View>
 
@@ -150,9 +183,87 @@ const AstroDetail = ({navigation}) => {
       {/* ---------- header end --- */}
 
       <ScrollView style={{flexGrow: 1}} showsVerticalScrollIndicator={false}>
+        {/* Pooja Image and name */}
+        {type === 'pooja' ? (
+          <View>
+            <Image
+              source={{uri: IMAGE_URL + detailsaData?.pojapicture}}
+              style={{
+                width: '100%',
+                height: hp('25%'),
+                borderRadius: hp('3%'),
+              }}
+            />
+            <View style={{position: 'absolute', top: hp('2%'), left: hp('2%')}}>
+              <Image
+                source={
+                  detailsaData?.astrologer?.panditpicture
+                    ? {uri: IMAGE_URL + detailsaData?.astrologer?.panditpicture}
+                    : LocalImage.UserOne
+                }
+                style={{
+                  width: wp('9%'),
+                  height: wp('9%'),
+                  borderRadius: hp('50%'),
+                }}
+              />
+            </View>
+            <View
+              style={{
+                width: '100%',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginTop: hp('2%'),
+              }}>
+              <View style={{width: '70%'}}>
+                <Text
+                  style={{
+                    fontFamily: FONT.SEMI_BOLD,
+                    fontSize: FONT_SIZE.F_16,
+                    color: COLOR.DARK_BLUE,
+                  }}>
+                  {detailsaData?.name}
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: FONT.REGULAR,
+                    fontSize: FONT_SIZE.F_11,
+                    color: COLOR.GRAY,
+                  }}>
+                  north Indian , chinese, biryani
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '30%',
+                }}>
+                <Star height={hp('3%')} width={wp('4%')} />
+                <Text
+                  style={[
+                    styles.smallText,
+                    {color: COLOR.GRAY, marginTop: hp('0.5%')},
+                  ]}>
+                  {' '}
+                  5 Star
+                </Text>
+              </View>
+            </View>
+          </View>
+        ) : null}
         <View style={[styles.cardView, {flexDirection: 'row'}]}>
           <Image
-            source={require('../../Icons/Images/User1.png')}
+            source={
+              detailsaData?.astrologer?.panditpicture ||
+              detailsaData?.panditpicture
+                ? type === 'pooja'
+                  ? {uri: IMAGE_URL + detailsaData?.astrologer?.panditpicture}
+                  : {uri: IMAGE_URL + detailsaData?.panditpicture}
+                : LocalImage.UserOne
+            }
             style={styles.astroImage}
           />
 
@@ -164,10 +275,15 @@ const AstroDetail = ({navigation}) => {
             }}>
             <View style={styles.HeadView}>
               <Text style={[styles.subheadlineText, {color: COLOR.DARK_BLUE}]}>
-                Cody Fisher
+                {type === 'pooja'
+                  ? detailsaData?.astrologer?.name
+                  : detailsaData?.name}
               </Text>
               <Text style={[styles.MediumText, {color: COLOR.DARK_BLUE}]}>
-                5 Year experience
+                {type === 'pooja'
+                  ? detailsaData?.astrologer?.experience
+                  : detailsaData?.experience}{' '}
+                experience
               </Text>
             </View>
             <View style={[styles.HeadView2, {justifyContent: 'space-between'}]}>
@@ -182,9 +298,15 @@ const AstroDetail = ({navigation}) => {
                     marginLeft: wp('1%'),
                   },
                 ]}>
-                English,Hindi
+                {type === 'pooja'
+                  ? detailsaData?.astrologer?.languages.substring(0, 18)
+                  : detailsaData?.languages.substring(0, 18)}{' '}
+                ...
                 <Text style={[styles.smallText, {color: '#FD6A35'}]}>
-                  {'  '} $ 125
+                  ₹{' '}
+                  {type === 'pooja'
+                    ? detailsaData?.astrologer?.price
+                    : detailsaData?.price}
                 </Text>
               </Text>
               <View
@@ -224,7 +346,10 @@ const AstroDetail = ({navigation}) => {
                     marginHorizontal: wp('1%'),
                   },
                 ]}>
-                Vedic,Vastu, pal..
+                {type === 'pooja'
+                  ? detailsaData?.astrologer?.expertise_in.substring(0, 18)
+                  : detailsaData?.expertise_in.substring(0, 18)}{' '}
+                ...
               </Text>
               <Star height={hp('3%')} width={wp('3%')} />
               <Text style={[styles.smallText, {color: COLOR.BLACK}]}>4.1</Text>
@@ -261,99 +386,165 @@ const AstroDetail = ({navigation}) => {
             </Text>
           </View>
         </View>
-        {/* --------- Description -------- */}
-        <View style={{marginTop: hp('2%')}}>
-          <Text style={{color: COLOR.GRAY, fontSize: FONT_SIZE.F_15}}>
-            We are a group of young, energetic, creative & professional website
-            developer, graphic designer and IT-Administrator who are devoted to
-            implement your requirement with modern technology. ? Website Design
-            -
-          </Text>
-        </View>
-        {/* ----------- Photos -------- */}
-        <View style={{flexDirection: 'row', marginTop: hp('2%')}}>
-          <FlatList
-            data={Photos}
-            showsVerticalScrollIndicator={false}
-            renderItem={({item}) => {
-              return (
-                <View style={{marginTop: hp('1%')}}>
-                  <Image
-                    source={item.img}
-                    style={{
-                      width: wp('20%'),
-                      height: hp('10%'),
-                      borderRadius: wp('2%'),
-                    }}
-                  />
-                </View>
-              );
-            }}
-          />
+        {type === 'astro' ? (
+          <>
+            {/* --------- Description -------- */}
+            <View style={{marginTop: hp('2%')}}>
+              <Text style={{color: COLOR.GRAY, fontSize: FONT_SIZE.F_15}}>
+                {detailsaData?.about}
+              </Text>
+            </View>
+            {/* ----------- Photos -------- */}
+            <View style={{flexDirection: 'row', marginTop: hp('2%')}}>
+              <FlatList
+                data={Photos}
+                showsVerticalScrollIndicator={false}
+                renderItem={({item}) => {
+                  return (
+                    <View style={{marginTop: hp('1%')}}>
+                      <Image
+                        source={item.img}
+                        style={{
+                          width: wp('20%'),
+                          height: hp('10%'),
+                          borderRadius: wp('2%'),
+                        }}
+                      />
+                    </View>
+                  );
+                }}
+              />
 
-          {/* ---- Photo 2----- */}
+              {/* ---- Photo 2----- */}
 
-          <FlatList
-            data={PhotosData}
-            showsVerticalScrollIndicator={false}
-            renderItem={({item}) => {
-              return (
-                <View style={{marginTop: hp('1%')}}>
-                  <Image
-                    source={item.img}
-                    style={{
-                      width: wp('30%'),
-                      height: hp('15%'),
-                      borderRadius: wp('2%'),
-                    }}
-                  />
-                </View>
-              );
-            }}
-          />
-          {/* ----- Photo 3 -------- */}
-          <FlatList
-            data={Photos}
-            showsVerticalScrollIndicator={false}
-            renderItem={({item}) => {
-              return (
-                <View style={{marginTop: hp('1%')}}>
-                  <Image
-                    source={item.img}
-                    style={{
-                      width: wp('20%'),
-                      height: hp('10%'),
-                      borderRadius: wp('2%'),
-                    }}
-                  />
-                </View>
-              );
-            }}
-          />
-        </View>
-        {/* ------------  Loyal Club ------ */}
-        <View style={[styles.cardView, {flexDirection: 'row'}]}>
-          <Image
-            source={require('../../Icons/Images/SubStra.png')}
-            style={styles.astroImage}
-          />
-          <View style={{width: wp('48%'), marginLeft: hp('1.5%')}}>
-            <Text style={[styles.blueText]}>Loyal Club Membership</Text>
-            <Text style={[styles.grayText, {marginTop: hp('1%')}]}>
-              We are a group of young, energetic, creative & professional
-            </Text>
+              <FlatList
+                data={PhotosData}
+                showsVerticalScrollIndicator={false}
+                renderItem={({item}) => {
+                  return (
+                    <View style={{marginTop: hp('1%')}}>
+                      <Image
+                        source={item.img}
+                        style={{
+                          width: wp('30%'),
+                          height: hp('15%'),
+                          borderRadius: wp('2%'),
+                        }}
+                      />
+                    </View>
+                  );
+                }}
+              />
+              {/* ----- Photo 3 -------- */}
+              <FlatList
+                data={Photos}
+                showsVerticalScrollIndicator={false}
+                renderItem={({item}) => {
+                  return (
+                    <View style={{marginTop: hp('1%')}}>
+                      <Image
+                        source={item.img}
+                        style={{
+                          width: wp('20%'),
+                          height: hp('10%'),
+                          borderRadius: wp('2%'),
+                        }}
+                      />
+                    </View>
+                  );
+                }}
+              />
+            </View>
+            {/* ------------  Loyal Club ------ */}
+            <View style={[styles.cardView, {flexDirection: 'row'}]}>
+              <Image
+                source={require('../../Icons/Images/SubStra.png')}
+                style={styles.astroImage}
+              />
+              <View style={{width: wp('48%'), marginLeft: hp('1.5%')}}>
+                <Text style={[styles.blueText]}>Loyal Club Membership</Text>
+                <Text style={[styles.grayText, {marginTop: hp('1%')}]}>
+                  We are a group of young, energetic, creative & professional
+                </Text>
+              </View>
+              <View style={styles.roundStyle}>
+                <Text
+                  style={{
+                    fontFamily: FONT.SEMI_BOLD,
+                    fontSize: FONT_SIZE.F_14,
+                    color: COLOR.WHITE,
+                  }}>
+                  Buy Now
+                </Text>
+              </View>
+            </View>
+          </>
+        ) : null}
+        {type === 'pooja' ? (
+          <View>
+            <View style={{marginVertical: hp('3%')}}>
+              <Text style={styles.pointsHedding}>Select Pooja slot</Text>
+              <View>
+                <DropDownPicker
+                  open={open}
+                  setOpen={setOpen}
+                  value={value}
+                  items={slotsData}
+                  placeholder={
+                    value?.slottime ? value?.slottime : 'Select Slot'
+                  }
+                  renderListItem={({item}) => {
+                    return (
+                      <TouchableOpacity
+                        onPress={() => {
+                          setValue(item);
+                          setOpen(false);
+                        }}
+                        key={item.id}
+                        style={{
+                          borderBottomColor: COLOR.GRAY,
+                          borderBottomWidth: hp('0.1%'),
+                          backgroundColor: COLOR.YELLOW,
+                          paddingVertical: hp('2%'),
+                        }}>
+                        <Text
+                          style={{
+                            color: '#fff',
+                            fontSize: hp('2.4%'),
+                            marginLeft: hp('2%'),
+                          }}>
+                          {item.slottime}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  }}
+                />
+              </View>
+            </View>
+            <View style={styles.ponintsView}>
+              <Text style={styles.pointsHedding}>
+                What are the advantages ?
+              </Text>
+              <Text style={styles.pointsSubText}>
+                {detailsaData?.advantages}
+              </Text>
+            </View>
+            <View style={styles.ponintsView}>
+              <Text style={styles.pointsHedding}>Who need this pooja ?</Text>
+              <Text style={styles.pointsSubText}>
+                {detailsaData?.needofpuja}
+              </Text>
+            </View>
+            <View style={styles.ponintsView}>
+              <Text style={styles.pointsHedding}>
+                Do you need to arrange anything ?
+              </Text>
+              <Text style={styles.pointsSubText}>
+                {detailsaData?.pujasamagri}
+              </Text>
+            </View>
           </View>
-          <View style={styles.roundStyle}>
-            <Text
-              style={{
-                fontFamily: FONT.SEMI_BOLD,
-                fontSize: FONT_SIZE.F_14,
-                color: COLOR.WHITE,
-              }}>
-              Buy Now
-            </Text>
-          </View>
-        </View>
+        ) : null}
         {/* --------- Review ------ */}
         <View style={styles.seeAllView}>
           <Text style={styles.headerTitle}>Review</Text>
@@ -438,191 +629,213 @@ const AstroDetail = ({navigation}) => {
             </Text>
           </View>
         </View>
-        {/* --------- Similar AStro ------- */}
-        <View style={styles.seeAllView}>
-          <Text style={styles.headerTitle}>Similar Astrologer</Text>
+        {type === 'astro' ? (
+          <>
+            {/* --------- Similar AStro ------- */}
+            <View style={styles.seeAllView}>
+              <Text style={styles.headerTitle}>Similar Astrologer</Text>
 
-          <TouchableOpacity onPress={() => navigation.navigate('Pooja')}>
-            <Text style={[styles.MediumText, {color: COLOR.DARK_BLUE}]}>
-              See all
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <FlatList
-          data={ZodiaArray}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({item, index}) => {
-            return (
-              <View>
-                <View style={[styles.cardView, {width: wp('60%')}]}>
-                  <View style={[styles.imageView]}>
-                    <Image
-                      source={require('../../Icons/Images/Astrologist.png')}
-                      style={styles.astroImage}
-                    />
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        // width: wp('10%'),
-                        // backgroundColor: 'red',
-                      }}>
-                      <Image
-                        source={require('../../Icons/Images/Message.png')}
+              <TouchableOpacity onPress={() => navigation.navigate('Pooja')}>
+                <Text style={[styles.MediumText, {color: COLOR.DARK_BLUE}]}>
+                  See all
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={ZodiaArray}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              renderItem={({item, index}) => {
+                return (
+                  <View>
+                    <View style={[styles.cardView, {width: wp('60%')}]}>
+                      <View style={[styles.imageView]}>
+                        <Image
+                          source={require('../../Icons/Images/Astrologist.png')}
+                          style={styles.astroImage}
+                        />
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            // width: wp('10%'),
+                            // backgroundColor: 'red',
+                          }}>
+                          <Image
+                            source={require('../../Icons/Images/Message.png')}
+                            style={{
+                              height: hp('8%'),
+                              width: wp('8%'),
+                              resizeMode: 'contain',
+                            }}
+                          />
+                          <Image
+                            source={require('../../Icons/Images/CallGreen.png')}
+                            style={{
+                              height: hp('9%'),
+                              width: wp('8%'),
+                              marginLeft: wp('2%'),
+                              resizeMode: 'contain',
+                            }}
+                          />
+                        </View>
+                      </View>
+
+                      <Text
+                        style={[
+                          styles.subheadlineText,
+                          {color: COLOR.DARK_BLUE, textAlign: 'left'},
+                        ]}>
+                        Leslie Alexander
+                      </Text>
+                      <View
                         style={{
-                          height: hp('8%'),
-                          width: wp('8%'),
-                          resizeMode: 'contain',
-                        }}
-                      />
-                      <Image
-                        source={require('../../Icons/Images/CallGreen.png')}
+                          flexDirection: 'row',
+                          alignSelf: 'flex-start',
+                          alignItems: 'center',
+                        }}>
+                        <Text
+                          style={[
+                            styles.MediumText,
+                            {color: COLOR.GRAY, textAlign: 'left'},
+                          ]}>
+                          Card Specialis
+                        </Text>
+                        <Text
+                          style={[
+                            styles.subheadlineText,
+                            {color: COLOR.YELLOW, marginLeft: wp('2%')},
+                          ]}>
+                          $ 10/M
+                        </Text>
+                        <Text
+                          style={[
+                            styles.MediumText,
+                            {
+                              color: COLOR.LIGHT_GRAY,
+                              textAlign: 'left',
+                              marginLeft: hp('2%'),
+                              textDecorationLine: 'line-through',
+                              textDecorationStyle: 'solid',
+                            },
+                          ]}>
+                          $ 10/M
+                        </Text>
+                      </View>
+
+                      {/* ----- DAY AND tIME -------- */}
+                      <View
                         style={{
-                          height: hp('9%'),
-                          width: wp('8%'),
-                          marginLeft: wp('2%'),
-                          resizeMode: 'contain',
-                        }}
-                      />
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                        }}>
+                        <Image
+                          source={require('../../Icons/Images/Greycalender.png')}
+                          style={{
+                            height: hp('4%'),
+                            width: wp('4%'),
+                            resizeMode: 'contain',
+                          }}
+                        />
+                        <Text
+                          style={[
+                            styles.smallText,
+                            {color: COLOR.GRAY, marginLeft: wp('2%')},
+                          ]}>
+                          Mon, Aug 29
+                        </Text>
+                        <Image
+                          source={require('../../Icons/Images/Clock.png')}
+                          style={{
+                            height: hp('4%'),
+                            width: wp('4%'),
+                            resizeMode: 'contain',
+                            marginLeft: wp('7%'),
+                          }}
+                        />
+                        <Text
+                          style={[
+                            styles.smallText,
+                            {color: COLOR.GRAY, marginLeft: wp('1%')},
+                          ]}>
+                          1:00 - 12:00 AM
+                        </Text>
+                      </View>
                     </View>
                   </View>
+                );
+              }}
+            />
+            {/* --------- Send Gift ------- */}
+            <View style={styles.seeAllView}>
+              <Text style={styles.headerTitle}>Send Gift</Text>
 
-                  <Text
-                    style={[
-                      styles.subheadlineText,
-                      {color: COLOR.DARK_BLUE, textAlign: 'left'},
-                    ]}>
-                    Leslie Alexander
-                  </Text>
+              <TouchableOpacity onPress={() => navigation.navigate('Pooja')}>
+                <Text style={[styles.MediumText, {color: COLOR.DARK_BLUE}]}>
+                  See all
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={Giftlist}
+              numColumns={3}
+              showsVerticalScrollIndicator={false}
+              renderItem={({item}) => {
+                return (
                   <View
                     style={{
-                      flexDirection: 'row',
-                      alignSelf: 'flex-start',
+                      width: wp('28%'),
+                      marginRight: hp('2%'),
+                      marginBottom: hp('2%'),
+                      alignSelf: 'center',
                       alignItems: 'center',
-                    }}>
-                    <Text
-                      style={[
-                        styles.MediumText,
-                        {color: COLOR.GRAY, textAlign: 'left'},
-                      ]}>
-                      Card Specialis
-                    </Text>
-                    <Text
-                      style={[
-                        styles.subheadlineText,
-                        {color: COLOR.YELLOW, marginLeft: wp('2%')},
-                      ]}>
-                      $ 10/M
-                    </Text>
-                    <Text
-                      style={[
-                        styles.MediumText,
-                        {
-                          color: COLOR.LIGHT_GRAY,
-                          textAlign: 'left',
-                          marginLeft: hp('2%'),
-                          textDecorationLine: 'line-through',
-                          textDecorationStyle: 'solid',
-                        },
-                      ]}>
-                      $ 10/M
-                    </Text>
-                  </View>
-
-                  {/* ----- DAY AND tIME -------- */}
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
+                      // backgroundColor: 'yellow',
                     }}>
                     <Image
-                      source={require('../../Icons/Images/Greycalender.png')}
+                      source={item.img}
                       style={{
-                        height: hp('4%'),
-                        width: wp('4%'),
+                        width: wp('16%'),
+                        height: hp('10%'),
                         resizeMode: 'contain',
                       }}
                     />
-                    <Text
-                      style={[
-                        styles.smallText,
-                        {color: COLOR.GRAY, marginLeft: wp('2%')},
-                      ]}>
-                      Mon, Aug 29
+                    <Text style={[styles.blueText, {fontFamily: FONT.MEDIUM}]}>
+                      {item.title}
                     </Text>
-                    <Image
-                      source={require('../../Icons/Images/Clock.png')}
-                      style={{
-                        height: hp('4%'),
-                        width: wp('4%'),
-                        resizeMode: 'contain',
-                        marginLeft: wp('7%'),
-                      }}
-                    />
                     <Text
-                      style={[
-                        styles.smallText,
-                        {color: COLOR.GRAY, marginLeft: wp('1%')},
-                      ]}>
-                      1:00 - 12:00 AM
+                      style={{
+                        fontSize: FONT_SIZE.F_13,
+                        fontFamily: FONT.MEDIUM,
+                        color: COLOR.YELLOW,
+                      }}>
+                      $ {item.price}
                     </Text>
                   </View>
-                </View>
-              </View>
-            );
-          }}
-        />
-        {/* --------- Send Gift ------- */}
-        <View style={styles.seeAllView}>
-          <Text style={styles.headerTitle}>Send Gift</Text>
-
-          <TouchableOpacity onPress={() => navigation.navigate('Pooja')}>
-            <Text style={[styles.MediumText, {color: COLOR.DARK_BLUE}]}>
-              See all
+                );
+              }}
+            />
+          </>
+        ) : null}
+      </ScrollView>
+      {/* Pooja Price */}
+      {type === 'pooja' ? (
+        <View style={styles.poojaPriceView}>
+          <Text style={styles.pointsHedding}> ₹ {detailsaData?.price}</Text>
+          <TouchableOpacity
+            onPress={() => handleBookNow()}
+            style={[styles.roundStyle, {width: wp('30%')}]}>
+            <Text
+              style={{
+                fontFamily: FONT.SEMI_BOLD,
+                fontSize: FONT_SIZE.F_14,
+                color: COLOR.WHITE,
+              }}>
+              Book Now
             </Text>
           </TouchableOpacity>
         </View>
-        <FlatList
-          data={Giftlist}
-          numColumns={3}
-          showsVerticalScrollIndicator={false}
-          renderItem={({item}) => {
-            return (
-              <View
-                style={{
-                  width: wp('28%'),
-                  marginRight: hp('2%'),
-                  marginBottom: hp('2%'),
-                  alignSelf: 'center',
-                  alignItems: 'center',
-                  // backgroundColor: 'yellow',
-                }}>
-                <Image
-                  source={item.img}
-                  style={{
-                    width: wp('16%'),
-                    height: hp('10%'),
-                    resizeMode: 'contain',
-                  }}
-                />
-                <Text style={[styles.blueText, {fontFamily: FONT.MEDIUM}]}>
-                  {item.title}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: FONT_SIZE.F_13,
-                    fontFamily: FONT.MEDIUM,
-                    color: COLOR.YELLOW,
-                  }}>
-                  $ {item.price}
-                </Text>
-              </View>
-            );
-          }}
-        />
-      </ScrollView>
+      ) : null}
     </View>
   );
 };
@@ -773,5 +986,28 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3.14,
     elevation: 4,
+  },
+  pointsHedding: {
+    fontFamily: FONT.SEMI_BOLD,
+    fontSize: hp('2.5%'),
+    color: COLOR.BLACK,
+  },
+  pointsSubText: {
+    fontFamily: FONT.REGULAR,
+    fontSize: hp('2%'),
+    color: COLOR.GRAY,
+  },
+  ponintsView: {
+    width: '100%',
+    borderColor: COLOR.GRAY,
+    borderWidth: hp('0.1%'),
+    borderRadius: hp('2%'),
+    padding: hp('2%'),
+    marginBottom: hp('2%'),
+  },
+  poojaPriceView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });

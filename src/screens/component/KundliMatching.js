@@ -16,7 +16,7 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import {COLOR, FONT, FONT_SIZE} from '../../Providerscreen/Globles';
-import IocalImage from '../../Providerscreen/IocalImage';
+import LocalImage from '../../Providerscreen/LocalImage';
 import WhiteBackArrow from '../../Icons/Svg/WhiteBackArrow.svg';
 import Whatsapp from '../../Icons/Svg/Whatsapp.svg';
 import Pressure from '../../Icons/Svg/Pressure.svg';
@@ -93,7 +93,7 @@ const KundliMatching = ({navigation}) => {
       <StatusBar backgroundColor={COLOR.SkyBLUE} barStyle="Light-content" />
 
       {/* --------Header ------- */}
-      <ImageBackground style={styles.backImageView} source={IocalImage.SkyBlue}>
+      <ImageBackground style={styles.backImageView} source={LocalImage.SkyBlue}>
         <View
           style={{
             flexDirection: 'row',
@@ -111,7 +111,7 @@ const KundliMatching = ({navigation}) => {
             </Text>
           </View>
           <Image
-            source={IocalImage.Subtract}
+            source={LocalImage.Subtract}
             style={{
               height: hp('3%'),
               width: wp('6%'),
@@ -217,7 +217,7 @@ const KundliMatching = ({navigation}) => {
               alignItems: 'center',
             }}>
             <Image
-              source={IocalImage.Taraju}
+              source={LocalImage.Taraju}
               style={{
                 width: wp('16%'),
                 height: hp('10%'),
@@ -256,7 +256,7 @@ const KundliMatching = ({navigation}) => {
 
           {/* ----- Image ----- */}
           <Image
-            source={IocalImage.Matchkundi}
+            source={LocalImage.Matchkundi}
             style={{
               width: wp('16%'),
               height: hp('10%'),
@@ -270,7 +270,7 @@ const KundliMatching = ({navigation}) => {
               alignItems: 'center',
             }}>
             <Image
-              source={IocalImage.Ariea}
+              source={LocalImage.Ariea}
               style={{
                 width: wp('16%'),
                 height: hp('10%'),
@@ -346,7 +346,7 @@ const KundliMatching = ({navigation}) => {
           </TouchableOpacity>
           <Image
             style={{height: hp('35%'), width: wp('45%'), resizeMode: 'contain'}}
-            source={IocalImage.Couple}
+            source={LocalImage.Couple}
           />
           <View
             style={[

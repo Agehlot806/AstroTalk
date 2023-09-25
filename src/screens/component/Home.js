@@ -21,7 +21,12 @@ import Searchicon from '../../Icons/Svg/Searchicon.svg';
 import Youtude from '../../Icons/Svg/Youtude.svg';
 import Footer from '../../Providerscreen/Footer';
 import {useDispatch, useSelector} from 'react-redux';
-import {getAstrologers, getHoroscopeCategory, getProducts, getZodics} from '../../Redux/actions/HomeAction';
+import {
+  getAstrologers,
+  getHoroscopeCategory,
+  getProducts,
+  getZodics,
+} from '../../Redux/actions/HomeAction';
 import {IMAGE_URL} from '../../Utils/constant';
 
 const Home = ({navigation}) => {
@@ -31,13 +36,15 @@ const Home = ({navigation}) => {
   const [horoscopes, setHoroscopes] = useState([]);
   const [zodics, setZodics] = useState([]);
   const [astrologers, setAstrologers] = useState([]);
-  const [products, setProducts] = useState([])
-  const {response, ZodicRes, AstroRes, ProductRes} = useSelector(state => state.homeState);
+  const [products, setProducts] = useState([]);
+  const {response, ZodicRes, AstroRes, ProductRes} = useSelector(
+    state => state.homeState,
+  );
   useEffect(() => {
     dispatch(getHoroscopeCategory());
     dispatch(getZodics());
     dispatch(getAstrologers());
-    dispatch(getProducts())
+    dispatch(getProducts());
   }, [dispatch]);
 
   useEffect(() => {
@@ -48,7 +55,7 @@ const Home = ({navigation}) => {
     setHoroscopes(category);
     setZodics(Zodics);
     setAstrologers(Astrologer);
-    setProducts(Product)
+    setProducts(Product);
   }, [response, ZodicRes, AstroRes, ProductRes]);
 
   const liveAstroArray = [
@@ -70,20 +77,19 @@ const Home = ({navigation}) => {
     },
   ];
 
-
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={COLOR.WHITE} barStyle="dark-content" />
       {/* --------Header ------- */}
-      <TouchableOpacity
-        activeOpacity={0.6}
-        onPress={() => navigation.goBack('')}
+      <View
         style={{
           marginVertical: hp('2%'),
           flexDirection: 'row',
           alignItems: 'center',
         }}>
-        <Menuicon height={hp('6%')} width={wp('6%')} />
+        <TouchableOpacity onPress={() =>  navigation.toggleDrawer()}>
+          <Menuicon height={hp('6%')} width={wp('6%')} />
+        </TouchableOpacity>
         <View style={{width: wp('65%'), marginLeft: wp('2%')}}>
           <Text style={styles.headerTitle}>Welcome to Astro</Text>
         </View>
@@ -103,7 +109,7 @@ const Home = ({navigation}) => {
             style={styles.imageStyle}
           />
         </View>
-      </TouchableOpacity>
+      </View>
 
       <ScrollView style={{flexGrow: 1}} showsVerticalScrollIndicator={false}>
         {/* ---------- TextInput view ----- */}
@@ -234,7 +240,9 @@ const Home = ({navigation}) => {
             alignItems: 'center',
           }}>
           <Text style={styles.titleHead}>Astrologer</Text>
-          <TouchableOpacity activeOpacity={0.6}>
+          <TouchableOpacity
+            activeOpacity={0.6}
+            onPress={() => navigation.navigate('CallandChat')}>
             {/* onPress={() => navigation.navigate('AstrologierList')} */}
             <Text style={[styles.subheadlineText, {color: COLOR.DARK_BLUE}]}>
               See all
@@ -300,7 +308,7 @@ const Home = ({navigation}) => {
                         styles.MediumText,
                         {color: COLOR.GRAY, textAlign: 'left'},
                       ]}>
-                      {item.expertise_in.substring(0, 13)}...
+                      {item.expertise_in?.substring(0, 13)}...
                     </Text>
                     <Text
                       style={[
@@ -430,14 +438,31 @@ const Home = ({navigation}) => {
           showsHorizontalScrollIndicator={false}
           renderItem={({item, index}) => {
             return (
-              <TouchableOpacity
-                activeOpacity={0.6}
-                onPress={() => navigation.navigate('Pooja')}
-                style={[styles.liveView]}>
-                <Image source={{
-                  uri: IMAGE_URL + item.prodpicture
-                }} style={styles.AstromollImage} />
-              </TouchableOpacity>
+              <>
+                <TouchableOpacity
+                  activeOpacity={0.6}
+                  onPress={() => navigation.navigate('Pooja')}
+                  style={[styles.liveView]}>
+                  <Image
+                    source={{
+                      uri: IMAGE_URL + item.prodpicture,
+                    }}
+                    style={styles.AstromollImage}
+                  />
+                </TouchableOpacity>
+                <View
+                  style={{
+                    position: 'absolute',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    bottom: hp('3.5%'),
+                    width: wp('35%'),
+                  }}>
+                  <Text style={[styles.subheadlineText, {color: COLOR.BLACK}]}>
+                    {item.prodname}
+                  </Text>
+                </View>
+              </>
             );
           }}
         />
@@ -579,6 +604,8 @@ const styles = StyleSheet.create({
     width: wp('35%'),
     resizeMode: 'cover',
     borderRadius: hp('2.5%'),
+    backgroundColor: COLOR.BLACK,
+    opacity: 0.4,
   },
   astroImage: {
     height: hp('8%'),

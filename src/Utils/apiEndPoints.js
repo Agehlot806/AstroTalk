@@ -11,5 +11,8 @@ export default {
   // Pooja
   POOJA_CATEGORY: 'base/puja-category/',
   POOJAS: 'base/puja/',
-  POOJA_FILTER: 'api/pooja-filter/'
+  POOJA_FILTER: 'api/pooja-filter/',
+  BOOKPOOJA: '/base/puja-slot-booking/',
+  POOJAPAYMENT: '/base/pujaorder/',
+  POOJA_SLOTS: '/base/puja-slot/'
 };

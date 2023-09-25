@@ -16,7 +16,7 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import {COLOR, FONT, FONT_SIZE} from '../../Providerscreen/Globles';
-import IocalImage from '../../Providerscreen/IocalImage';
+import LocalImage from '../../Providerscreen/LocalImage';
 import Back from '../../Icons/Svg/Back.svg';
 import Whatsapp from '../../Icons/Svg/Whatsapp.svg';
 import Searchicon from '../../Icons/Svg/Searchicon.svg';
@@ -75,7 +75,7 @@ const KundliNewandDelete = ({navigation}) => {
           </Text>
         </View>
         <Image
-          source={IocalImage.Subtract}
+          source={LocalImage.Subtract}
           style={{height: hp('3%'), width: wp('6%'), resizeMode: 'contain'}}
         />
         <TouchableOpacity
@@ -241,7 +241,7 @@ const KundliNewandDelete = ({navigation}) => {
                   <Text style={styles.TitleHeadinge}>Birth Time</Text>
                   <View style={styles.dateView}>
                     <Image
-                      source={IocalImage.Clock}
+                      source={LocalImage.Clock}
                       style={{
                         width: wp('4%'),
                         height: hp('5%'),
@@ -348,7 +348,7 @@ const KundliNewandDelete = ({navigation}) => {
                   <Text style={styles.TitleHeadinge}>Birth Time</Text>
                   <View style={styles.dateView}>
                     <Image
-                      source={IocalImage.Clock}
+                      source={LocalImage.Clock}
                       style={{
                         width: wp('4%'),
                         height: hp('5%'),
