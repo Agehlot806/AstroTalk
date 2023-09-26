@@ -97,7 +97,7 @@ export const addUserProfile = params => async dispatch => {
 
 export const userLogout = () => async dispach => {
   try {
-    AsyncStorage.clear();
+    await AsyncStorage.clear();
     dispach({
       type: USER_LOGOUT,
       payload: null,

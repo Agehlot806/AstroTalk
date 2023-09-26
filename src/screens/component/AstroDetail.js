@@ -40,8 +40,6 @@ const AstroDetail = ({navigation, route}) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [slotsData, setSlotsData] = useState([]);
-  console.log('slotsData', slotsData);
-  console.log('open', open);
   const {response} = useSelector(state => state.pooja);
 
   useEffect(() => {
@@ -55,7 +53,7 @@ const AstroDetail = ({navigation, route}) => {
 
   const handleBookNow = () => {
     if (value !== null) {
-      navigation.navigate('payment', {type: type, detailsaData: detailsaData});
+      navigation.navigate('payment', {type: type, detailsaData: {...detailsaData, slotId: value}});
     } else {
       ErrorMessage({
         msg: 'Please select the slot',

@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -14,10 +14,16 @@ import {
 import Back from '../../Icons/Svg/Back.svg';
 import {COLOR, FONT, FONT_SIZE} from '../../Providerscreen/Globles';
 import LocalImage from '../../Providerscreen/LocalImage';
-import {useDispatch} from 'react-redux';
-import {bookPoojaSlot, poojaPayment} from '../../Redux/actions/PoojaAction';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  bookPoojaSlot,
+  poojaPayment,
+  removePoojaOrder,
+} from '../../Redux/actions/PoojaAction';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import RazorpayCheckout from 'react-native-razorpay';
+import ErrorMessage from '../../Utils/ErrorMessage';
 
 const Options = [
   {
@@ -44,37 +50,116 @@ const Options = [
 const Payment = ({navigation, route}) => {
   const {type, detailsaData = {}} = route?.params || {};
   const dispatch = useDispatch();
-  console.log('detailsaData in payment', detailsaData);
+  // console.log('detailsaData in payment', detailsaData);
+  const {
+    bookRes,
+    slotBook = false,
+    poojaBook = false,
+  } = useSelector(state => state.pooja);
+  console.log('bookRes', bookRes);
   const [selectedId, setSelectedId] = useState(0);
+  const [razorpayData, setRazorpayData] = useState('');
 
-  const handlePayment = () => {
+  useEffect(() => {
+    if (bookRes?.status === 201 && slotBook) {
+      handlePayment();
+    } else if (bookRes?.status === 201 && poojaBook) {
+      ErrorMessage({
+        msg: 'Pooja book Successfully',
+        backgroundColor: COLOR.Green
+      })
+      navigation.navigate('Pooja');
+      dispatch(removePoojaOrder());
+    }
+
+    return () => {};
+  }, [bookRes]);
+
+  const handleBooking = () => {
     if (type === 'pooja') {
       PoojaBooking();
     }
   };
 
-  const PoojaBooking = async () => {
-    const userId = AsyncStorage.getItem('userId');
-    const getNextDays = (currentDate = new Date(), daysToAdd = 1) => {
-      const nextDate = new Date(currentDate);
-      nextDate.setDate(currentDate.getDate() + daysToAdd);
-      return nextDate;
+  const handlePayment = async () => {
+    const userInfo = await AsyncStorage.getItem('userInfo');
+    const phone = await AsyncStorage.getItem('userPhone');
+    var options = {
+      order_id: bookRes?.data?.order_id ? bookRes?.data?.order_id : '',
+      description: 'Credits towards consultation',
+      image: 'https://i.imgur.com/3g7nmJC.png',
+      currency: 'INR',
+      key: 'rzp_test_yXpKwsLWjkzvBJ',
+      amount: Math.round(Number(detailsaData?.price).toFixed(2) * 100),
+      name: detailsaData?.name,
+      prefill: {
+        email: 'void@razorpay.com',
+        contact: phone ? phone : '',
+        name: 'Razorpay Software',
+      },
+      theme: {color: COLOR.YELLOW},
     };
+    RazorpayCheckout.open(options)
+      .then(data => {
+        console.log('data in success', data);
+        // handle success
+        // alert(`Success: ${data.razorpay_payment_id}`);
+        setRazorpayData(data);
+        PoojaBooking(data);
+      })
+      .catch(error => {
+        // handle failure
+        console.log('error in payment', error);
+        alert(`Error: ${error.code} | ${error.description}`);
+      });
+  };
+
+  const poojaslotBook = async () => {
+    const userId = await AsyncStorage.getItem('userId');
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    const formData = new FormData();
+    formData.append('myuser', Number(userId));
+    formData.append('pooja', detailsaData?.id),
+      formData.append('pujaslot', detailsaData?.slotId?.id),
+      formData.append(
+        'dateofpuja',
+        moment(tomorrow.toDateString()).format('DD-MM-YYYY'),
+      );
+    dispatch(bookPoojaSlot(formData));
+  };
+
+  const PoojaBooking = async (data) => {
+    const userId = await AsyncStorage.getItem('userId');
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
     const slotParam = {
       user: userId,
       pooja: detailsaData?.id,
-      pujaslot: 1,
-      dateofpuja: moment(getNextDays).format('DD-MM-YYYY'),
+      pujaslot: detailsaData?.slotId?.id,
+      dateofpuja: moment(tomorrow.toDateString()).format('DD-MM-YYYY'),
     };
-    const BookingParam = {
-      ...slotParam,
-      order_price: detailsaData?.price,
-      razor_pay_order_id: 'dwsdfwerwr434',
-      razor_pay_payment_signature: 'rwerwrw',
-    };
+
+    const formData = new FormData();
+    formData.append('userid', Number(userId));
+    formData.append('pujaid', detailsaData?.id),
+      formData.append('pujaslot', detailsaData?.slotId?.id),
+      formData.append(
+        'dateofpuja',
+        moment(tomorrow.toDateString()).format('DD-MM-YYYY'),
+      );
+    formData.append('order_price', detailsaData?.price);
+    formData.append('razor_pay_order_id', data?.razorpay_order_id);
+    formData.append(
+      'razor_pay_payment_signature',
+      data?.razorpay_signature,
+    );
+    console.log('formData', formData);
+
     if (detailsaData) {
-      dispatch(bookPoojaSlot());
-      dispatch(poojaPayment());
+      dispatch(poojaPayment(formData));
     }
   };
   return (
@@ -114,33 +199,55 @@ const Payment = ({navigation, route}) => {
         </View>
       </TouchableOpacity>
       {/* Payment Option */}
-      {Options.map(item => {
-        return (
-          <TouchableOpacity
-            key={item.id}
-            onPress={() => setSelectedId(item.id)}
-            style={styles.optionsView}>
-            <TouchableOpacity style={styles.radioButton}>
-              {selectedId === item.id ? <View style={styles.radioDot} /> : null}
+      <View style={{flex: 1}}>
+        {Options.map(item => {
+          return (
+            <TouchableOpacity
+              key={item.id}
+              onPress={() =>
+                setSelectedId(item.id === selectedId ? 0 : item.id)
+              }
+              style={styles.optionsView}>
+              <TouchableOpacity style={styles.radioButton}>
+                {selectedId === item.id ? (
+                  <View style={styles.radioDot} />
+                ) : null}
+              </TouchableOpacity>
+              <View>
+                {item.image === '' ? (
+                  <Text
+                    style={{
+                      color: COLOR.BLACK,
+                      fontFamily: FONT.SEMI_BOLD,
+                      fontSize: hp('2.5%'),
+                      marginLeft: hp('3%'),
+                    }}>
+                    {item.name}
+                  </Text>
+                ) : (
+                  <Image source={item.image} style={styles.paymentImg} />
+                )}
+              </View>
             </TouchableOpacity>
-            <View>
-              {item.image === '' ? (
-                <Text
-                  style={{
-                    color: COLOR.BLACK,
-                    fontFamily: FONT.SEMI_BOLD,
-                    fontSize: hp('2.5%'),
-                    marginLeft: hp('3%'),
-                  }}>
-                  {item.name}
-                </Text>
-              ) : (
-                <Image source={item.image} style={styles.paymentImg} />
-              )}
-            </View>
-          </TouchableOpacity>
-        );
-      })}
+          );
+        })}
+      </View>
+      <View style={styles.btnView}>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => {
+            if (selectedId === 0) {
+              ErrorMessage({
+                msg: 'Please select the payment method to process',
+                backgroundColor: COLOR.RED,
+              });
+            } else {
+              poojaslotBook();
+            }
+          }}>
+          <Text style={styles.btnTxt}>Process</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -194,5 +301,22 @@ const styles = StyleSheet.create({
     height: hp('5%'),
     marginLeft: hp('3%'),
     resizeMode: 'contain',
+  },
+  btnView: {
+    marginVertical: hp('3%'),
+  },
+  btn: {
+    backgroundColor: COLOR.YELLOW,
+    height: hp('8%'),
+    width: '100%',
+    borderRadius: hp('2%'),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  btnTxt: {
+    color: COLOR.WHITE,
+    fontFamily: FONT.SEMI_BOLD,
+    fontSize: hp('3%'),
+    textTransform: 'uppercase',
   },
 });

@@ -91,24 +91,9 @@ const AppStackComponet = () => {
     </AppStack.Navigator>
   );
 };
-// const getUserId = async () => {
-//   try {
-//     const userId = await AsyncStorage.getItem('userId');
-//     return userId;
-//   } catch (error) {
-//     // Handle error
-//     console.error('Error reading userId from AsyncStorage:', error);
-//     return null;
-//   }
-// };
 
 const AuthLoadingComponent = () => {
-  // const userId = await getUserId();
-  // console.log('userId', userId);
   const {response,userData, authToken = false} = useSelector(state => state.authReducer);
-  console.log('response', response);
-  console.log('userData', userData);
-  console.log('authToken', authToken);
 
   return (
     <AuthLoading.Navigator screenOptions={screenOptions}>
